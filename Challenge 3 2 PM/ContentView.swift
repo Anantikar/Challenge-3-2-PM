@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FamilyControls
 
 extension Color {
     init(hex: String) {
@@ -82,6 +83,7 @@ struct ContentView: View {
         .padding()
     }
 }
+
 
 #Preview {
     ContentView()
