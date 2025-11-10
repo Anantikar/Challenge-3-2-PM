@@ -7,13 +7,15 @@
 
 import SwiftUI
 import FamilyControls
+import ManagedSettings
 
 struct AppBlockView: View {
+    @EnvironmentObject var shieldManager: ShieldManager
     
     let center = AuthorizationCenter.shared
     
     var body: some View {
-        ContentView()
+        BlockAppsView()
             .task{
                 do{
                     try await center.requestAuthorization(for: .individual)
@@ -22,9 +24,4 @@ struct AppBlockView: View {
                 }
             }
     }
-}
-
-
-#Preview {
-    AppBlockView()
 }

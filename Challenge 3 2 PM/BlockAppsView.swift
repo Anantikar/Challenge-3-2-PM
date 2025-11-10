@@ -6,10 +6,23 @@
 //
 
 import SwiftUI
+import FamilyControls
+
 
 struct BlockAppsView: View {
+    
+    let center = AuthorizationCenter.shared
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        BlockerView()
+            .task{
+                do{
+                    try await center.requestAuthorization(for: .individual)
+                }catch{
+                    print("Failed to get authorization: \(error)")
+                }
+            }
+        
     }
 }
 

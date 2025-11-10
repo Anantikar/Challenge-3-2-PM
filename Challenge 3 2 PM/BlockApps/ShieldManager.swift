@@ -23,9 +23,12 @@ class ShieldManager: ObservableObject{
         store.shield.applications = applications.isEmpty ? nil: applications
         store.shield.applicationCategories = categories.isEmpty ? nil: .specific(categories)
         store.shield.webDomainCategories = categories.isEmpty ? nil: .specific(categories)
+        
     }
     
     func unshieldActivities() {
         store.clearAllSettings()
     }
 }
+
+

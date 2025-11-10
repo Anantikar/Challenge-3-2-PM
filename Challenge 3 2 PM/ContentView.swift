@@ -56,7 +56,7 @@ struct ContentView: View {
                     PickerView()
                 }
                 NavigationLink {
-                    BlockAppsView()
+                    AppsOverviewView(dogName: dogName)
                 } label: {
                     Text("Apps blocked")
                         .foregroundStyle(.black)
