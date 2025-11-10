@@ -1,20 +1,21 @@
 //
-//  BlockAppsView.swift
+//  AppBlockView.swift
 //  Challenge 3 2 PM
 //
-//  Created by T Krobot on 10/11/25.
+//  Created by Anantika Tiwari on 10/11/25.
 //
 
 import SwiftUI
 import FamilyControls
+import ManagedSettings
 
-
-struct BlockAppsView: View {
+struct AppBlockView: View {
+    @EnvironmentObject var shieldManager: ShieldManager
     
     let center = AuthorizationCenter.shared
     
     var body: some View {
-        BlockerView()
+        BlockAppsView()
             .task{
                 do{
                     try await center.requestAuthorization(for: .individual)
@@ -22,10 +23,5 @@ struct BlockAppsView: View {
                     print("Failed to get authorization: \(error)")
                 }
             }
-        
     }
-}
-
-#Preview {
-    BlockAppsView()
 }

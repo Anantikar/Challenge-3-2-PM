@@ -6,13 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		D985F3152EC187CF00636A16 /* GameCenterResources.gamekit in Resources */ = {isa = PBXBuildFile; fileRef = D985F3142EC187CF00636A16 /* GameCenterResources.gamekit */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		CFE01E592EC1772B00A086F1 /* Challenge 3 2 PM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Challenge 3 2 PM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D985F3142EC187CF00636A16 /* GameCenterResources.gamekit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GameCenterResources.gamekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +32,6 @@
 		CFE01E502EC1772B00A086F1 = {
 			isa = PBXGroup;
 			children = (
-				D985F3142EC187CF00636A16 /* GameCenterResources.gamekit */,
 				CFE01E5B2EC1772B00A086F1 /* Challenge 3 2 PM */,
 				CFE01E5A2EC1772B00A086F1 /* Products */,
 			);
@@ -115,7 +109,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D985F3152EC187CF00636A16 /* GameCenterResources.gamekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FamilyControls
 
 extension Color {
     init(hex: String) {
@@ -55,7 +56,7 @@ struct ContentView: View {
                     PickerView()
                 }
                 NavigationLink {
-                    BlockAppsView()
+                    AppsOverviewView(dogName: dogName)
                 } label: {
                     Text("Apps blocked")
                         .foregroundStyle(.black)
@@ -82,6 +83,7 @@ struct ContentView: View {
         .padding()
     }
 }
+
 
 #Preview {
     ContentView()
