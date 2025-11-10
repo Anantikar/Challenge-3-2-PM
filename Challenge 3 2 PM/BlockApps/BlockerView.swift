@@ -50,6 +50,8 @@ struct BlockerView: View {
             }
             .buttonStyle(.bordered)
             .padding()
+            
+            Spacer()
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
         .onReceive(timer){ currentTime in
@@ -57,6 +59,7 @@ struct BlockerView: View {
                 isLocked = false
                 lockButton = "Unlocked"
                 manager.unshieldActivities()
+                
             }
         
         }

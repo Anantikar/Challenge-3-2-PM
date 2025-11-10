@@ -6,10 +6,20 @@
 //
 
 import SwiftUI
+import FamilyControls
 
 struct ContentView: View {
+    let center = AuthorizationCenter.shared
+    
     var body: some View {
         BlockerView()
+            .task{
+                do{
+                    try await center.requestAuthorization(for: .individual)
+                }catch{
+                    print("Failed to get authorization: \(error)")
+                }
+            }
     }
 }
 
