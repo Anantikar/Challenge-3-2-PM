@@ -29,11 +29,15 @@ extension Color {
 struct ContentView: View {
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
+    @State private var dogName: String = ""
     var body: some View {
         NavigationStack {
             VStack {
-                Text("dawg jumps when tapped")
-                Text("dawg is sad")
+                Text("Choose a name for your dog!")
+                TextField("E.g. dawg ", text: $dogName)
+                    .textFieldStyle(.roundedBorder)
+                Text("\(dogName) jumps when tapped")
+                Text("\(dogName) is sad")
                     .font(.largeTitle)
                 Text("go play with him!")
                     .font(.largeTitle)
