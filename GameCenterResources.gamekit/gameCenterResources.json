@@ -3,6 +3,76 @@
     "version" : "2024-11-15"
   },
   "resources" : {
+    "achievements" : [
+      {
+        "activityProperties" : {
 
+        },
+        "archived" : false,
+        "points" : 100,
+        "referenceName" : "Evolution",
+        "repeatable" : true,
+        "showBeforeEarned" : true,
+        "vendorIdentifier" : "1234567"
+      }
+    ],
+    "leaderboardLocalizations" : {
+      "676767676767" : [
+        {
+          "formatterOverride" : "INTEGER",
+          "formatterSuffix" : "points",
+          "formatterSuffixSingular" : "point",
+          "locale" : "en-GB",
+          "localID" : "676767676767-en-GB",
+          "name" : "leaderboard"
+        }
+      ],
+      "sleep.lb" : [
+        {
+          "formatterOverride" : "INTEGER",
+          "formatterSuffix" : "points",
+          "formatterSuffixSingular" : "point",
+          "locale" : "en-GB",
+          "localID" : "sleep.lb-en-GB",
+          "name" : "sleep leaderboard"
+        }
+      ]
+    },
+    "leaderboards" : [
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2025-11-10T05:58:04Z",
+        "referenceName" : "sleepdawgleaderboard",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "676767676767",
+        "visibility" : "SHOW_FOR_ALL"
+      },
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "recurrenceDuration" : "PT24H",
+        "recurrenceRule" : "FREQ=DAILY;INTERVAL=1",
+        "recurrenceStartDate" : "2025-11-10T07:11:24Z",
+        "referenceName" : "sleep leaderboard",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "sleep.lb",
+        "visibility" : "SHOW_FOR_ALL"
+      }
+    ]
   }
 }

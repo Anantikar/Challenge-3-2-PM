@@ -9,6 +9,11 @@ import SwiftUI
 
 @main
 struct Challenge_3_2_PMApp: App {
+    init() {
+        // Authenticate when the app launches
+        GameCenterManager.shared.authenticateUser()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
