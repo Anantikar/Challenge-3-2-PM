@@ -1,0 +1,35 @@
+{
+  "meta" : {
+    "version" : "2024-11-15"
+  },
+  "resources" : {
+    "leaderboardLocalizations" : {
+      "sleepdawg.leaderboard" : [
+        {
+          "formatterOverride" : "INTEGER",
+          "formatterSuffix" : "points",
+          "formatterSuffixSingular" : "",
+          "locale" : "en-GB",
+          "localID" : "sleepdawg.leaderboard-en-GB",
+          "name" : "Leaderboard"
+        }
+      ]
+    },
+    "leaderboards" : [
+      {
+        "activityProperties" : {
+
+        },
+        "archived" : false,
+        "defaultFormatter" : "INTEGER",
+        "referenceName" : "Leaderboard",
+        "scoreRangeEnd" : null,
+        "scoreRangeStart" : null,
+        "scoreSortType" : "DESC",
+        "submissionType" : "BEST_SCORE",
+        "vendorIdentifier" : "sleepdawg.leaderboard",
+        "visibility" : "SHOW_FOR_ALL"
+      }
+    ]
+  }
+}
