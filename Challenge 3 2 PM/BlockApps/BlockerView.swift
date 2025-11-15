@@ -19,39 +19,43 @@ struct BlockerView: View {
     let timer = Timer.publish(every:60, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        VStack {
-            Text("Block Apps")
-                .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
+        NavigationStack{
+            VStack {
+                Text("Block Apps")
+                    .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
+                    .padding()
+                    .bold()
+                    .font(.largeTitle)
+                
+                Button {
+                    showActivityPicker = true
+                } label: {
+                    Label("Choose apps to block", systemImage: "gearshape")
+                }
+                .buttonStyle(.borderedProminent)
                 .padding()
-                .bold()
-                .font(.largeTitle)
-            
-            Button {
-                showActivityPicker = true
-            } label: {
-                Label("Choose apps to block", systemImage: "gearshape")
+                
+                HStack{
+                    Text("Block until:")
+                        .font(.title3)
+                    DatePicker("Block Until:", selection: $wakeUp, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                }
+                
+                
+                NavigationLink{
+                    AppsOverviewView()
+                }label:{
+                    Text("Confirm")
+                }
+                .buttonStyle(.bordered)
+                .simultaneousGesture(TapGesture().onEnded{
+                    manager.shieldActivities()
+                    isLocked = true
+                })
+                
+                Spacer()
             }
-            .buttonStyle(.borderedProminent)
-            .padding()
-            
-            HStack{
-                Text("Block until:")
-                    .font(.title3)
-                DatePicker("Block Until:", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
-            }
-            
-            Button {
-                manager.shieldActivities()
-                isLocked = true
-                lockButton = "Locked"
-            }label: {
-                Label(lockButton, systemImage: "lock")
-            }
-            .buttonStyle(.bordered)
-            .padding()
-            
-            Spacer()
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
         .onReceive(timer){ currentTime in
@@ -61,7 +65,7 @@ struct BlockerView: View {
                 manager.unshieldActivities()
                 
             }
-        
+            
         }
     }
 }
