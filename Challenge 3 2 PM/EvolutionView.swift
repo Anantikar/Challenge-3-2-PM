@@ -105,3 +105,7 @@ class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
         gameCenterViewController.dismiss(animated: true)
     }
 }
+
+#Preview {
+    EvolutionView()
+}
