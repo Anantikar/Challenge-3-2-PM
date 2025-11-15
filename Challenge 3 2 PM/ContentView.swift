@@ -28,6 +28,7 @@ extension Color {
 //Extract RGB Values: Bitwise operations calculate separate red, green, and blue values.
 //Normalize to SwiftUI’s Color: Each component is divided by 255.0 to get the normalized color used by SwiftUI.
 struct ContentView: View {
+    @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
     @State private var dogName: String = ""
@@ -56,7 +57,7 @@ struct ContentView: View {
                     PickerView()
                 }
                 NavigationLink {
-                    AppsOverviewView(dogName: dogName)
+                    AppsOverviewView(manager: manager, dogName: dogName)
                 } label: {
                     Text("Apps blocked")
                         .foregroundStyle(.black)
@@ -80,11 +81,10 @@ struct ContentView: View {
                 }
             }
         }
-        .padding()
     }
 }
 
 
 #Preview {
-    ContentView()
+    ContentView(manager: ShieldManager())
 }

@@ -16,7 +16,7 @@ struct Challenge_3_2_PMApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(manager: ShieldManager())
         }
     }
 }

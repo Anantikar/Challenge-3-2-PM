@@ -11,10 +11,17 @@ import ManagedSettings
 
 class ShieldManager: ObservableObject{
     @Published var discouragedSelections = FamilyActivitySelection()
+    @Published var blockUntil: Date? = nil
+    @Published var isLocked: Bool = false
     
     private let store = ManagedSettingsStore()
+    private var timer: Timer?
+
+        init() {
+            startTimer()
+        }
     
-    func shieldActivities() {
+    func shieldActivities(until date: Date?) {
         store.clearAllSettings()
         
         let applications = discouragedSelections.applicationTokens
@@ -24,11 +31,37 @@ class ShieldManager: ObservableObject{
         store.shield.applicationCategories = categories.isEmpty ? nil: .specific(categories)
         store.shield.webDomainCategories = categories.isEmpty ? nil: .specific(categories)
         
+        blockUntil = date
+        isLocked = true
     }
     
     func unshieldActivities() {
         store.clearAllSettings()
+        isLocked = false
+        blockUntil = nil
     }
+    
+    func startTimer() {
+            timer?.invalidate()
+
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                self.updateLockState()
+            }
+        }
+
+        func updateLockState() {
+            if let blockUntil = blockUntil {
+                if blockUntil > Date() {
+                    isLocked = true
+                } else {
+                    isLocked = false
+                    unshieldActivities()
+                }
+            } else {
+                isLocked = false
+                unshieldActivities()
+            }
+        }
 }
 
 

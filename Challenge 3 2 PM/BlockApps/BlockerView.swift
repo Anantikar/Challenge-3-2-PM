@@ -9,14 +9,11 @@ import SwiftUI
 import FamilyControls
 
 struct BlockerView: View {
-    
-    @StateObject private var manager = ShieldManager()
+    @Environment(\.presentationMode) private var
+    presentationMode: Binding<PresentationMode>
+    @ObservedObject var manager: ShieldManager
+    @Binding var wakeUp: Date?
     @State private var showActivityPicker = false
-    @State private var isLocked = false
-    @State private var lockButton = "Unlocked"
-    @State private var wakeUp = Date.now
-    
-    let timer = Timer.publish(every:60, on: .main, in: .common).autoconnect()
     
     var body: some View {
         NavigationStack{
@@ -38,40 +35,37 @@ struct BlockerView: View {
                 HStack{
                     Text("Block until:")
                         .font(.title3)
-                    DatePicker("Block Until:", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
+                    DatePicker(
+                        "Block Until:",
+                        selection: Binding(
+                            get: { wakeUp ?? Date() },
+                            set: { wakeUp = $0 }
+                        ),
+                        displayedComponents: .hourAndMinute
+                    )
+                    .labelsHidden()
                 }
                 
                 
-                NavigationLink{
-                    AppsOverviewView()
-                }label:{
-                    Text("Confirm")
+                Button(action: {
+                    manager.blockUntil = wakeUp
+                    manager.isLocked = true
+                    manager.shieldActivities(until: wakeUp)
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Label("Confirm", systemImage: "checkmark.circle")
                 }
-                .buttonStyle(.bordered)
-                .simultaneousGesture(TapGesture().onEnded{
-                    manager.shieldActivities()
-                    isLocked = true
-                })
                 
                 Spacer()
             }
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
-        .onReceive(timer){ currentTime in
-            if currentTime >= wakeUp && isLocked{
-                isLocked = false
-                lockButton = "Unlocked"
-                manager.unshieldActivities()
-                
-            }
-            
-        }
     }
 }
 
 
 
 #Preview {
-    BlockerView()
+    BlockerView(manager: ShieldManager(),
+                wakeUp: .constant(Date().addingTimeInterval(3600)))
 }
