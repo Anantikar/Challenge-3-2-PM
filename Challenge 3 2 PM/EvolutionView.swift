@@ -1,7 +1,4 @@
 //
-//  EvolutionView.swift
-//  Challenge 3 2 PM
-//
 //  Created by T Krobot on 10/11/25.
 //
 
@@ -9,7 +6,7 @@ import SwiftUI
 import GameKit
 
 // Replace this with your actual Leaderboard ID from App Store Connect
-private let leaderboardID: String = "com.yourcompany.yourapp.leaderboard.main"
+private let leaderboardID: String = "sleepdawg.leaderboard"
 
 struct EvolutionView: View {
     @StateObject private var gcManager = GameCenterManager.shared
@@ -107,8 +104,4 @@ class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true)
     }
-}
-
-#Preview {
-    EvolutionView()
 }

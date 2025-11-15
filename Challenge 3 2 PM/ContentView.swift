@@ -22,11 +22,7 @@ extension Color {
         self.init(red: red, green: green, blue: blue)
     }
 }
-// How It Works
-//Remove the ‘#’: The code checks for and ignores the leading # character if it exists.
-//Convert to Hex: scanHexInt64(&rgb) parses the remaining string into a UInt64 value.
-//Extract RGB Values: Bitwise operations calculate separate red, green, and blue values.
-//Normalize to SwiftUI’s Color: Each component is divided by 255.0 to get the normalized color used by SwiftUI.
+
 struct ContentView: View {
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
@@ -34,13 +30,14 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                DogImageView(level: 1, emotion: .happy)
                 Text("Choose a name for your dog!")
                 TextField("E.g. dawg ", text: $dogName)
                     .textFieldStyle(.roundedBorder)
                 Text("\(dogName) jumps when tapped")
                 Text("\(dogName) is sad")
                     .font(.largeTitle)
-                Text("go play with him!")
+                Text("go play with it!")
                     .font(.largeTitle)
                 Button {
                     isPickerPresented = true

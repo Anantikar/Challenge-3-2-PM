@@ -12,7 +12,7 @@ import SwiftUI
 class GameCenterManager: NSObject, ObservableObject {
     static let shared = GameCenterManager()
     @Published var isAuthenticated = false
-
+    
     func authenticateUser() {
         GKLocalPlayer.local.authenticateHandler = { viewController, error in
             if let vc = viewController {
