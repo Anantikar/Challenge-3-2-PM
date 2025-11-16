@@ -13,6 +13,7 @@ struct DogImageView: View {
     var level: Int
     var emotion: Emotion
     @State private var isJumping = false
+    @State private var heartsDogHas = 0
     var body: some View {
         VStack {
             Image("dog\(level)\(emotion.rawValue)")
