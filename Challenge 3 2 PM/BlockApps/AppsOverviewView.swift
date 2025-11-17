@@ -51,12 +51,12 @@ struct AppsOverviewView: View {
                 manager.unshieldActivities()
                 manager.isLocked = false
                 showConfirmation.toggle()
-                dogManager.hearts -= 5
+                dogManager.hearts -= 50
             }label: {
                 Text("Emergency Stop")
             }
         }message: {
-            Text("Are you sure you want to stop? \(dogManager.name) will lose 5 hearts.")
+            Text("Are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
         }
     }
 }

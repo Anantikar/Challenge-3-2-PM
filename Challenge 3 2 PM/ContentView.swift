@@ -31,7 +31,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                DogImageView(dogManager: DogManager())
+                DogImageView(dogManager: dogManager)
                 Text("Choose a name for your dog!")
                 TextField("E.g. dawg ", text: $dogManager.name)
                     .textFieldStyle(.roundedBorder)
@@ -62,12 +62,6 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color(hex: "#d0e4f7"))
                         .cornerRadius(20)
-                }
-                
-                Button{
-                    dogManager.hearts += 5
-                } label: {
-                    Text("Heart + 5")
                 }
                 
                 Button {
