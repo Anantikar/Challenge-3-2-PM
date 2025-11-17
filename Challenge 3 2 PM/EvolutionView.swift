@@ -11,14 +11,11 @@ private let leaderboardID: String = "sleepdawg.leaderboard"
 struct EvolutionView: View {
     @StateObject private var gcManager = GameCenterManager.shared
     @State private var isJumping = false
-    @ObservedObject var dogManager = DogManager()
+    @ObservedObject var dogManager: DogManager
     var body: some View {
         VStack(spacing: 20) {
-<<<<<<< HEAD
-            DogImageView()
-=======
             DogImageView(dogManager: dogManager)
->>>>>>> main
+
             Group {
                 if gcManager.isAuthenticated {
                     Text("Signed in as \(GKLocalPlayer.local.displayName)")
@@ -113,5 +110,5 @@ class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
 }
 
 #Preview {
-    EvolutionView()
+    EvolutionView(dogManager: DogManager())
 }

@@ -9,26 +9,21 @@ struct PickerView: View {
     @State private var bedtime = Date.now
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
-<<<<<<< HEAD
-    @State var dogName = ""
+    @ObservedObject var dogManager: DogManager
+
     var body: some View {
         VStack {
-            DogImageView()
-=======
-    @ObservedObject var dogManager = DogManager()
-    var body: some View {
-        VStack {
-            DogImageView(dogManager: DogManager())
->>>>>>> main
+            DogImageView(dogManager: dogManager)
+
             HStack {
-                Text("When does \(dogName) wanna sleep")
+                Text("When does \(dogManager.name) wanna sleep")
                     .font(.headline)
                     .padding()
                 DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
                     .padding()
             }
             HStack {
-                Text("When does \(dogName) wanna wake up")
+                Text("When does \(dogManager.name) wanna wake up")
                     .font(.headline)
                     .padding()
                 DatePicker("", selection: $wakeup, displayedComponents: .hourAndMinute)
@@ -44,7 +39,7 @@ struct PickerView: View {
     }
 }
 #Preview {
-    PickerView()
+    PickerView(dogManager: DogManager())
 }
 
 

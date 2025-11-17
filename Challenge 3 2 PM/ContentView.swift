@@ -33,7 +33,6 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 DogImageView(dogManager: dogManager)
->>>>>>> main
                 Text("Choose a name for your dog!")
                 TextField("E.g. dawg ", text: $dogManager.name)
                     .textFieldStyle(.roundedBorder)
@@ -53,7 +52,7 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 .sheet(isPresented: $isPickerPresented) {
-                    PickerView(dogName: dogName)
+                    PickerView(dogManager: dogManager)
                 }
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
@@ -84,7 +83,7 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 .sheet(isPresented: $isEvolutionPresented) {
-                    EvolutionView()
+                    EvolutionView(dogManager: dogManager)
                 }
             }
             .toolbar{
