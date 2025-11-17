@@ -27,16 +27,24 @@ struct ContentView: View {
     @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
+<<<<<<< HEAD
     @State private var dogName: String = "Ethan"
     var body: some View {
         NavigationStack {
             VStack {
                 DogImageView()
+=======
+    @StateObject var dogManager = DogManager()
+    var body: some View {
+        NavigationStack {
+            VStack {
+                DogImageView(dogManager: dogManager)
+>>>>>>> main
                 Text("Choose a name for your dog!")
-                TextField("E.g. dawg ", text: $dogName)
+                TextField("E.g. dawg ", text: $dogManager.name)
                     .textFieldStyle(.roundedBorder)
-                Text("\(dogName) jumps when tapped")
-                Text("\(dogName) is sad")
+                Text("\(dogManager.name) jumps when tapped")
+                Text("\(dogManager.name) is sad")
                     .font(.largeTitle)
                 Text("go play with it!")
                     .font(.largeTitle)
@@ -54,7 +62,7 @@ struct ContentView: View {
                     PickerView(dogName: dogName)
                 }
                 NavigationLink {
-                    AppsOverviewView(manager: manager, dogName: dogName)
+                    AppsOverviewView(manager: manager, dogManager: dogManager)
                 } label: {
                     Text("Apps blocked")
                         .foregroundStyle(.black)
@@ -63,6 +71,7 @@ struct ContentView: View {
                         .background(Color(hex: "#d0e4f7"))
                         .cornerRadius(20)
                 }
+                
                 Button {
                     isEvolutionPresented = true
                 } label: {
