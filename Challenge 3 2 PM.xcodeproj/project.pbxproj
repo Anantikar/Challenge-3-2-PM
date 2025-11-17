@@ -55,6 +55,7 @@
 		D9E3C2622ECB073600D18CF6 /* Exceptions for "Challenge 3 2 PM" folder in "widgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Assets.xcassets,
 				SharedDogDefaults.swift,
 			);
 			target = D9E3C23F2ECAF7B300D18CF6 /* widgetExtension */;

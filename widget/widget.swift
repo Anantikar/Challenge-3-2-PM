@@ -11,22 +11,22 @@ import SwiftUI
 
 struct DogEntry: TimelineEntry {
     let date: Date
-    let dogEvolution: String
+    let imageName: String
 }
 struct Dog {
     var evolutionList: [String] = [
-        "Dog Evolution 1, Widget",
-        "Dog Evolution 2, Widget",
-        "Dog Evolution 3, Widget",
-        "Dog Evolution 4, Widget",
-        "Dog Evolution 5, Widget"
+        "dog1widget",
+        "dog2widget",
+        "dog3widget",
+        "dog4widget",
+        "dog5widget"
     ]
 }
 struct DogProvider: TimelineProvider {
     private let dogInfo = Dog()
     private let placeholderEntry = DogEntry(
         date: Date(),
-        dogEvolution: "Dog Evolution 1, Widget"
+        imageName: "dog1widget"
     )
     func placeholder(in context: Context) -> DogEntry {
         return placeholderEntry
@@ -38,11 +38,12 @@ struct DogProvider: TimelineProvider {
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<DogEntry>) -> Void) {
         let shared = SharedDogDefaults.shared
-        let level = shared.integer(forKey: "level")
+        var level = shared.integer(forKey: "level")
         // clamp level to valid range
+        level = level > 0 ? level - 1 : level
         let clampedLevel = min(max(level, 0), dogInfo.evolutionList.count-1)
-        let evolution = dogInfo.evolutionList[clampedLevel]
-        let entry = DogEntry(date: Date(), dogEvolution: evolution)
+        let imageName = dogInfo.evolutionList[clampedLevel]
+        let entry = DogEntry(date: Date(), imageName: imageName)
         let timeline = Timeline(entries: [entry], policy: .never)
         
         completion(timeline)
@@ -52,14 +53,7 @@ struct DogWidgetView: View {
     var entry: DogProvider.Entry
     var body: some View {
         VStack(alignment: .leading){
-            HStack{
-                Text("dawg")
-            }
-            .font(.title3)
-            .bold()
-            .padding(.bottom, 8)
-            
-            Image(entry.dogEvolution)
+            Image(entry.imageName)
                 .resizable()
                 .scaledToFit()
         }

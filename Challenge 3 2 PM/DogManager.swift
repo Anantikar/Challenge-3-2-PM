@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 enum Emotion: String {
     case happy, sad, standard, dead
 }
@@ -71,7 +72,7 @@ class DogManager : ObservableObject{
                 return noOfHeartsToNextLevel
             }
         }
-        return 0 
+        return 0
     }
     
     func saveToSharedDefaults() {
@@ -80,6 +81,7 @@ class DogManager : ObservableObject{
         defaults.set(level, forKey: "level")
         defaults.set(hearts, forKey: "hearts")
         defaults.set(name, forKey: "name")
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 

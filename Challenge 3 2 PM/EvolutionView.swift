@@ -15,7 +15,7 @@ struct EvolutionView: View {
     var body: some View {
         VStack(spacing: 20) {
             DogImageView(dogManager: dogManager)
-
+            
             Group {
                 if gcManager.isAuthenticated {
                     Text("Signed in as \(GKLocalPlayer.local.displayName)")
@@ -37,14 +37,14 @@ struct EvolutionView: View {
             }
             .buttonStyle(.bordered)
             .disabled(!gcManager.isAuthenticated)
-        .onAppear {
-            if !gcManager.isAuthenticated {
-                GameCenterManager.shared.authenticateUser()
+            .onAppear {
+                if !gcManager.isAuthenticated {
+                    GameCenterManager.shared.authenticateUser()
+                }
             }
         }
     }
 }
-
 // Use a String for the leaderboard identifier as required by GameKit
 
 func reportScore(_ score: Int) {

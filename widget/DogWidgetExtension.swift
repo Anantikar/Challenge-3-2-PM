@@ -6,7 +6,7 @@
 //
 import WidgetKit
 import SwiftUI
-@main
+
 struct DogWidgetExtension: Widget {
     let kind: String = "dog widget extension"
     var body: some WidgetConfiguration {
@@ -22,9 +22,26 @@ struct DogWidgetExtension: Widget {
         ])
     }
 }
+
 #Preview(as: .systemSmall) {
     DogWidgetExtension()
 } timeline: {
-    DogEntry(date: .now, dogEvolution: "deadDog")
-    DogEntry(date: .now + 1, dogEvolution: "sadDog")
+    let now = Date()
+    let dogLevels = [
+        "dog1widget",
+        "dog2widget",
+        "dog3widget",
+        "dog4widget",
+        "dog5widget"
+    ]
+    let entries: [DogEntry] = dogLevels.enumerated().map { index, name in
+        DogEntry(
+            date: now.addingTimeInterval(Double(index * 60)),
+            imageName: name
+        )
+    }
+    // Emit entries directly; do not wrap them in Timeline(...)
+    for entry in entries {
+        entry
+    }
 }
