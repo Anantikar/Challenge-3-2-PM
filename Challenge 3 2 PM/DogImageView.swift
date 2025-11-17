@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
-enum Emotion: String {
-    case happy, sad, standard, dead
-}
+
 struct DogImageView: View {
-    var level: Int
-    var emotion: Emotion
+    @ObservedObject var dogManager: DogManager
     @State private var isJumping = false
     var body: some View {
         VStack {
-            Image("dog\(level)\(emotion.rawValue)")
+            Image("dog\(dogManager.level)\(dogManager.emotion)")
                 .resizable()
                 .scaledToFit()
                 .offset(y: isJumping ? -35 : 0)
@@ -35,5 +32,5 @@ struct DogImageView: View {
 }
 
 #Preview {
-    DogImageView(level: 1, emotion: .happy)
+    DogImageView(dogManager: DogManager())
 }
