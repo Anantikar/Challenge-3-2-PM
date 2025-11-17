@@ -21,12 +21,12 @@ func scheduleLocalNotification() {
     content.title = "Reminder!"
     content.body = "Don't forget your task."
     content.sound = UNNotificationSound.default // Optional: Play default sound
-
+    
     // Define a trigger (e.g., time-based, calendar-based, or location-based)
     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // Fire after 5 seconds, not repeating
-
+    
     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
+    
     UNUserNotificationCenter.current().add(request) { (error) in
         if let error = error {
             print("Error scheduling notification: \(error.localizedDescription)")
@@ -42,7 +42,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         // Handle notification presentation in the foreground
         completionHandler([.banner, .sound]) // Show banner and play sound
     }
-
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
