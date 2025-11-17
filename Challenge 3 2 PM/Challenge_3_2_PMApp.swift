@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct Challenge_3_2_PMApp: App {
+    @Environment(\.openURL) var openURL
     init() {
         // Authenticate when the app launches
         GameCenterManager.shared.authenticateUser()
@@ -17,6 +18,9 @@ struct Challenge_3_2_PMApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(manager: ShieldManager())
+                .onOpenURL { url in
+                    print("opened from widget", url)
+                }
         }
     }
 }

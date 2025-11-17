@@ -9,17 +9,11 @@ struct PickerView: View {
     @State private var bedtime = Date.now
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
-<<<<<<< HEAD
     @State var dogName = ""
-    var body: some View {
-        VStack {
-            DogImageView()
-=======
     @ObservedObject var dogManager = DogManager()
     var body: some View {
         VStack {
             DogImageView(dogManager: DogManager())
->>>>>>> main
             HStack {
                 Text("When does \(dogName) wanna sleep")
                     .font(.headline)

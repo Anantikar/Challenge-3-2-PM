@@ -27,19 +27,11 @@ struct ContentView: View {
     @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
-<<<<<<< HEAD
-    @State private var dogName: String = "Ethan"
-    var body: some View {
-        NavigationStack {
-            VStack {
-                DogImageView()
-=======
     @StateObject var dogManager = DogManager()
     var body: some View {
         NavigationStack {
             VStack {
                 DogImageView(dogManager: dogManager)
->>>>>>> main
                 Text("Choose a name for your dog!")
                 TextField("E.g. dawg ", text: $dogManager.name)
                     .textFieldStyle(.roundedBorder)
@@ -59,7 +51,7 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 .sheet(isPresented: $isPickerPresented) {
-                    PickerView(dogName: dogName)
+                    PickerView(dogName: dogManager.name)
                 }
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
@@ -89,7 +81,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 #Preview {
     ContentView(manager: ShieldManager())

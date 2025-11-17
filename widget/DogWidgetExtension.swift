@@ -6,7 +6,7 @@
 //
 import WidgetKit
 import SwiftUI
-
+@main
 struct DogWidgetExtension: Widget {
     let kind: String = "dog widget extension"
     var body: some WidgetConfiguration {
@@ -19,21 +19,11 @@ struct DogWidgetExtension: Widget {
         .description("dawgg")
         .supportedFamilies([
             .systemSmall,
-            .systemMedium
         ])
     }
 }
-
 #Preview(as: .systemSmall) {
     DogWidgetExtension()
-} timeline: {
-    DogEntry(date: .now, dogEvolution: "deadDog")
-    DogEntry(date: .now + 1, dogEvolution: "sadDog")
-}
-
-#Preview(as: .systemMedium) {
-    DogWidgetExtension()
-
 } timeline: {
     DogEntry(date: .now, dogEvolution: "deadDog")
     DogEntry(date: .now + 1, dogEvolution: "sadDog")

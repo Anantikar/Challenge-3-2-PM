@@ -15,6 +15,7 @@ class DogManager : ObservableObject{
     @Published var hearts: Int{
         didSet{
             evolve()
+            saveToSharedDefaults()
         }
     }
     @Published var name: String
@@ -89,6 +90,14 @@ class DogManager : ObservableObject{
             emotion = .happy
             level = 5
         }
+    }
+    
+    func saveToSharedDefaults() {
+        let defaults = SharedDogDefaults.shared
+        defaults.set(emotion.rawValue, forKey: "emotion")
+        defaults.set(level, forKey: "level")
+        defaults.set(hearts, forKey: "hearts")
+        defaults.set(name, forKey: "name")
     }
 }
 

@@ -15,17 +15,18 @@ struct DogEntry: TimelineEntry {
 }
 struct Dog {
     var evolutionList: [String] = [
-        "deadDog",
-        "sadDog",
-        "standardDog",
-        "happyDog",
+        "Dog Evolution 1, Widget",
+        "Dog Evolution 2, Widget",
+        "Dog Evolution 3, Widget",
+        "Dog Evolution 4, Widget",
+        "Dog Evolution 5, Widget"
     ]
 }
 struct DogProvider: TimelineProvider {
     private let dogInfo = Dog()
     private let placeholderEntry = DogEntry(
         date: Date(),
-        dogEvolution: ""
+        dogEvolution: "Dog Evolution 1, Widget"
     )
     func placeholder(in context: Context) -> DogEntry {
         return placeholderEntry
@@ -36,17 +37,13 @@ struct DogProvider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<DogEntry>) -> Void) {
-        let currentDate = Date()
-        var entries : [DogEntry] = []
-        
-        for minuteOffset in 0 ..< 60 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-            let evolution = dogInfo.evolutionList[Int.random(in: 0...dogInfo.evolutionList.count-1)]
-            let entry = DogEntry(date: entryDate, dogEvolution: evolution)
-            entries.append(entry)
-        }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        let shared = SharedDogDefaults.shared
+        let level = shared.integer(forKey: "level")
+        // clamp level to valid range
+        let clampedLevel = min(max(level, 0), dogInfo.evolutionList.count-1)
+        let evolution = dogInfo.evolutionList[clampedLevel]
+        let entry = DogEntry(date: Date(), dogEvolution: evolution)
+        let timeline = Timeline(entries: [entry], policy: .never)
         
         completion(timeline)
     }
@@ -62,9 +59,11 @@ struct DogWidgetView: View {
             .bold()
             .padding(.bottom, 8)
             
-            Text(entry.dogEvolution)
-                .font(.caption)
+            Image(entry.dogEvolution)
+                .resizable()
+                .scaledToFit()
         }
+        .widgetURL(URL(string: "sleepdawg://openApp"))
         .foregroundStyle(.white)
         .containerBackground(for: .widget){
             Color.cyan
