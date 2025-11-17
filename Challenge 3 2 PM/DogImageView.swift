@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct DogImageView: View {
-    @ObservedObject var dogManager: DogManager
     @State private var isJumping = false
+    @ObservedObject var dogManager: DogManager
     var body: some View {
         VStack {
             Image("dog\(dogManager.level)\(dogManager.emotion.rawValue)")
@@ -30,6 +30,8 @@ struct DogImageView: View {
         }
     }
 }
+
+
 #Preview {
     DogImageView(dogManager: DogManager())
 }

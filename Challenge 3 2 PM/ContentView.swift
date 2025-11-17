@@ -27,6 +27,7 @@ struct ContentView: View {
     @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
+    @State private var isStatsPresented = false
     @StateObject var dogManager = DogManager()
     var body: some View {
         NavigationStack {
@@ -51,7 +52,7 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 .sheet(isPresented: $isPickerPresented) {
-                    PickerView(dogName: dogManager.name)
+                    PickerView(dogManager: dogManager)
                 }
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
@@ -64,10 +65,17 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 
+                Button{
+                    dogManager.hearts += 50
+                }label:{
+                    Text("Hearts + 50")
+                }
+                Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue) ")
+                
                 Button {
                     isEvolutionPresented = true
                 } label: {
-                    Text("❤️ till evolution")
+                    Text("Leaderboard")
                         .foregroundStyle(.black)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -75,7 +83,17 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 .sheet(isPresented: $isEvolutionPresented) {
-                    EvolutionView()
+                    EvolutionView(dogManager: dogManager)
+                }
+            }
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button("Stats"){
+                        isStatsPresented.toggle()
+                    }
+                    .sheet(isPresented: $isStatsPresented){
+                        DogStatsView(dogManager: dogManager)
+                    }
                 }
             }
         }

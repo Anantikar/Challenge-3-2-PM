@@ -28,68 +28,50 @@ class DogManager : ObservableObject{
         
     }
     
-    func evolve(){
-        if hearts < 50 {
-            emotion = .dead
-            level = 1
-        } else if hearts>=50 && hearts<100 {
-            emotion = .dead
-            level = 2
-        } else if hearts>=100 && hearts<200 {
-            emotion = .dead
-            level = 3
-        } else if hearts>=200 && hearts<300 {
-            emotion = .dead
-            level = 4
-        } else if hearts>=300 && hearts<450 {
-            emotion = .dead
-            level = 5
-        } else if hearts>=450 && hearts<550 {
-            emotion = .sad
-            level = 1
-        } else if hearts>=550 && hearts<650 {
-            emotion = .sad
-            level = 2
-        } else if hearts>=650 && hearts<750 {
-            emotion = .sad
-            level = 3
-        } else if hearts>=750 && hearts<850 {
-            emotion = .sad
-            level = 4
-        } else if hearts>=850 && hearts<1000{
-            emotion = .sad
-            level = 5
-        } else if hearts>=1000 && hearts<1150{
-            emotion = .standard
-            level = 1
-        } else if hearts>=1150 && hearts<1300{
-            emotion = .standard
-            level = 2
-        } else if hearts>=1300 && hearts<1450{
-            emotion = .standard
-            level = 3
-        } else if hearts>=1450 && hearts<1600{
-            emotion = .standard
-            level = 4
-        } else if hearts>=1600 && hearts<1800{
-            emotion = .standard
-            level = 5
-        } else if hearts>=1800 && hearts<2000{
-            emotion = .happy
-            level = 1
-        } else if hearts>=2000 && hearts<2200{
-            emotion = .happy
-            level = 2
-        } else if hearts>=2200 && hearts<2400{
-            emotion = .happy
-            level = 3
-        } else if hearts>=2400 && hearts<2600{
-            emotion = .happy
-            level = 4
-        } else if hearts>=2600{
-            emotion = .happy
-            level = 5
+    private let stages: [(minHearts: Int, emotion: Emotion, level: Int)] = [
+        (0, .dead, 1),
+        (50, .dead, 2),
+        (100, .dead, 3),
+        (200, .dead, 4),
+        (300, .dead, 5),
+        
+        (450, .sad, 1),
+        (550, .sad, 2),
+        (650, .sad, 3),
+        (750, .sad, 4),
+        (850, .sad, 5),
+        
+        (1000, .standard, 1),
+        (1150, .standard, 2),
+        (1300, .standard, 3),
+        (1450, .standard, 4),
+        (1600, .standard, 5),
+        
+        (1800, .happy, 1),
+        (2000, .happy, 2),
+        (2200, .happy, 3),
+        (2400, .happy, 4),
+        (2600, .happy, 5)
+    ]
+    
+    func evolve() {
+        for stage in stages.reversed() {
+            if hearts >= stage.minHearts {
+                emotion = stage.emotion
+                level = stage.level
+                return
+            }
         }
+    }
+    
+    func heartsToNextEvolution() -> Int {
+        for stage in stages {
+            if hearts < stage.minHearts {
+                let noOfHeartsToNextLevel = stage.minHearts - hearts
+                return noOfHeartsToNextLevel
+            }
+        }
+        return 0 
     }
     
     func saveToSharedDefaults() {
