@@ -14,7 +14,11 @@ struct EvolutionView: View {
     @ObservedObject var dogManager = DogManager()
     var body: some View {
         VStack(spacing: 20) {
+<<<<<<< HEAD
+            DogImageView()
+=======
             DogImageView(dogManager: dogManager)
+>>>>>>> main
             Group {
                 if gcManager.isAuthenticated {
                     Text("Signed in as \(GKLocalPlayer.local.displayName)")
