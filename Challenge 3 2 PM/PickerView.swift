@@ -10,20 +10,23 @@ struct PickerView: View {
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
     var body: some View {
-        HStack {
-            Text("What time does dawg wanna sleep")
-                .font(.headline)
-                .padding()
-            DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
-                .padding()
-        }
-        HStack {
-            Text("When does dawg wanna wake up")
-                .font(.headline)
-                .padding()
-            DatePicker("", selection: $wakeup, displayedComponents: .hourAndMinute)
-                .padding()
-
+        VStack {
+            DogImageView(level: 1, emotion: .happy)
+            HStack {
+                Text("What time does dawg wanna sleep")
+                    .font(.headline)
+                    .padding()
+                DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
+                    .padding()
+            }
+            HStack {
+                Text("When does dawg wanna wake up")
+                    .font(.headline)
+                    .padding()
+                DatePicker("", selection: $wakeup, displayedComponents: .hourAndMinute)
+                    .padding()
+                
+            }
         }
     }
 }
