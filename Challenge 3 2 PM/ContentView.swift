@@ -50,7 +50,7 @@ struct ContentView: View {
                     .padding(.bottom)
                 }
                 if isNameFinal {
-                    Text("\(dogManager.name) is sad")
+                    Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
                         .font(.largeTitle)
                 }
                 
@@ -97,8 +97,12 @@ struct ContentView: View {
             .padding()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Stats") {
+                    Button {
                         isStatsPresented.toggle()
+                    } label: {
+                        Image(systemName: "pawprint.fill")
+                            .imageScale(.large)
+                            .symbolRenderingMode(.hierarchical)
                     }
                     .sheet(isPresented: $isStatsPresented) {
                         DogStatsView(dogManager: dogManager)
