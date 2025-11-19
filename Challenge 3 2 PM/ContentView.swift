@@ -37,7 +37,6 @@ struct ContentView: View {
                 Text("Choose a name for your dog!")
                 TextField("E.g. dawg ", text: $dogManager.name)
                     .textFieldStyle(.roundedBorder)
-                Text("\(dogManager.name) jumps when tapped")
                 Text("\(dogManager.name) is sad")
                     .font(.largeTitle)
                 Text("go play with it!")

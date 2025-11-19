@@ -18,6 +18,7 @@ class DogManager : Equatable{
         didSet{
             evolve()
             saveToSharedDefaults()
+            GameCenterManager.shared.submitHeartsToLeaderboard(hearts)
         }
     }
     @Published var name: String

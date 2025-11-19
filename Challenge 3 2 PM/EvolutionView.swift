@@ -1,5 +1,6 @@
 //
-//  Created by T Krobot on 10/11/25.
+//  EvolutionView.swift
+//  Challenge 3 2 PM
 //
 
 import SwiftUI
@@ -15,7 +16,8 @@ struct EvolutionView: View {
     var body: some View {
         VStack(spacing: 20) {
             DogImageView(dogManager: dogManager)
-            
+
+            // Status / Sign-in button
             Group {
                 if gcManager.isAuthenticated {
                     Text("Signed in as \(GKLocalPlayer.local.displayName)")
@@ -25,60 +27,54 @@ struct EvolutionView: View {
                     Text("Not signed in to Game Center")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    
+
                     Button("Sign in to Game Center") {
-                        GameCenterManager.shared.authenticateUser()
+                        GameCenterManager.shared.authenticate()
                     }
                     .buttonStyle(.bordered)
                 }
                 .buttonStyle(.bordered)
             }
-            
+
             // Show leaderboard button
             Button("Show Leaderboard") {
                 showLeaderboard()
             }
             .buttonStyle(.bordered)
             .disabled(!gcManager.isAuthenticated)
-            .onAppear {
-                if !gcManager.isAuthenticated {
-                    GameCenterManager.shared.authenticateUser()
-                }
+        }
+        .onAppear {
+            if !gcManager.isAuthenticated {
+                GameCenterManager.shared.authenticate()
             }
         }
     }
 }
-// Use a String for the leaderboard identifier as required by GameKit
-
-func reportScore(_ score: Int) {
+func showLeaderboard() {
     guard GKLocalPlayer.local.isAuthenticated else {
-        print("⚠️ Player not authenticated; cannot submit score.")
+        print("⚠️ Player not authenticated; cannot show leaderboard.")
         return
     }
-    
-    if #available(iOS 14.0, *) {
-        GKLeaderboard.submitScore(
-            score,
-            context: 0,
-            player: GKLocalPlayer.local,
-            leaderboardIDs: [leaderboardID]
-        ) { error in
-            if let error = error {
-                print("❌ Error reporting score: \(error.localizedDescription)")
-            } else {
-                print("✅ Score submitted successfully!")
-            }
-        }
+
+    let gcVC = GKGameCenterViewController(
+        leaderboardID: leaderboardID,
+        playerScope: .global,
+        timeScope: .allTime
+    )
+    gcVC.gameCenterDelegate = GameCenterDelegate.shared
+
+    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+       let rootVC = scene.windows.first?.rootViewController {
+        rootVC.present(gcVC, animated: true)
     } else {
-        let legacyScore = GKScore(leaderboardIdentifier: leaderboardID)
-        legacyScore.value = Int64(score)
-        GKScore.report([legacyScore]) { error in
-            if let error = error {
-                print("❌ Error reporting score (legacy): \(error.localizedDescription)")
-            } else {
-                print("✅ Score submitted successfully! (legacy)")
-            }
-        }
+        print("⚠️ Could not find root view controller.")
+    }
+}
+class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
+    static let shared = GameCenterDelegate()
+
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true)
     }
 }
 

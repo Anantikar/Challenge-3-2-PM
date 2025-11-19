@@ -45,6 +45,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D93FC0F12ECC5497009B9BA9 /* Exceptions for "widget" folder in "Challenge 3 2 PM" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = CFE01E582EC1772B00A086F1 /* Challenge 3 2 PM */;
+		};
 		D9E3C2542ECAF7B500D18CF6 /* Exceptions for "widget" folder in "widgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -74,6 +81,7 @@
 		D9E3C2432ECAF7B300D18CF6 /* widget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				D93FC0F12ECC5497009B9BA9 /* Exceptions for "widget" folder in "Challenge 3 2 PM" target */,
 				D9E3C2542ECAF7B500D18CF6 /* Exceptions for "widget" folder in "widgetExtension" target */,
 			);
 			path = widget;
@@ -389,7 +397,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Challenge 3 2 PM/Preview Content\"";
-				DEVELOPMENT_TEAM = XL5JK4F896;
+				DEVELOPMENT_TEAM = 4A7N8GWL27;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Challenge-3-2-PM-Info.plist";
@@ -423,7 +431,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Challenge 3 2 PM/Preview Content\"";
-				DEVELOPMENT_TEAM = XL5JK4F896;
+				DEVELOPMENT_TEAM = 4A7N8GWL27;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Challenge-3-2-PM-Info.plist";
