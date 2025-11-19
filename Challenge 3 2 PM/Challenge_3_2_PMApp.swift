@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Challenge_3_2_PMApp: App {
@@ -22,5 +23,6 @@ struct Challenge_3_2_PMApp: App {
                     print("opened from widget", url)
                 }
         }
+        .modelContainer(for: DogManager.self)
     }
 }

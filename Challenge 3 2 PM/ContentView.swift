@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FamilyControls
+import SwiftData
 
 extension Color {
     init(hex: String) {
@@ -24,11 +25,11 @@ extension Color {
 }
 
 struct ContentView: View {
+    @Environment(\.modelContext) var modelContext
     @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
     @State private var isStatsPresented = false
-    @StateObject var dogManager = DogManager()
     var body: some View {
         NavigationStack {
             VStack {

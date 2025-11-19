@@ -5,12 +5,13 @@
 //  Created by Anantika Tiwari on 17/11/25.
 //
 
-import SwiftUI
+import SwiftData
 import WidgetKit
 enum Emotion: String {
     case happy, sad, standard, dead
 }
-class DogManager : ObservableObject{
+@Model
+class DogManager : Equatable{
     @Published var emotion: Emotion
     @Published var level: Int
     @Published var hearts: Int{

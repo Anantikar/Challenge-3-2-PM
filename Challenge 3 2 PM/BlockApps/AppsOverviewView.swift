@@ -11,7 +11,7 @@ import FamilyControls
 struct AppsOverviewView: View {
     @ObservedObject var manager: ShieldManager
     let center = AuthorizationCenter.shared
-    @ObservedObject var dogManager: DogManager
+    @Bindable var dogManager: DogManager
     @State private var showConfirmation: Bool = false
     var body: some View {
         VStack {

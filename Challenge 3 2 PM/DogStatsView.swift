@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DogStatsView: View {
     
-    @ObservedObject var dogManager:DogManager
+    @Bindable var dogManager:DogManager
     
     var body: some View {
         VStack{

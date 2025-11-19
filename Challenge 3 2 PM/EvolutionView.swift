@@ -10,7 +10,7 @@ private let leaderboardID: String = "sleepdawg.leaderboard"
 
 struct EvolutionView: View {
     @StateObject private var gcManager = GameCenterManager.shared
-    @ObservedObject var dogManager: DogManager
+    @Bindable var dogManager: DogManager
     
     var body: some View {
         VStack(spacing: 20) {
