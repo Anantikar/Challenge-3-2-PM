@@ -9,7 +9,6 @@ class GameCenterManager: NSObject, ObservableObject {
     func authenticate() {
         GKLocalPlayer.local.authenticateHandler = { viewController, error in
             if let viewController = viewController {
-                // presenting game center login screen
                 guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                       let root = scene.windows.first?.rootViewController else {
                     return

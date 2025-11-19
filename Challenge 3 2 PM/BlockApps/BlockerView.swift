@@ -18,12 +18,6 @@ struct BlockerView: View {
     var body: some View {
         NavigationStack{
             VStack {
-                Text("Block Apps")
-                    .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
-                    .padding()
-                    .bold()
-                    .font(.largeTitle)
-                
                 Button {
                     showActivityPicker = true
                 } label: {
@@ -58,6 +52,7 @@ struct BlockerView: View {
                 
                 Spacer()
             }
+            .navigationTitle("Block Apps")
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
     }
