@@ -59,7 +59,7 @@ struct DogWidgetView: View {
         }
         .widgetURL(URL(string: "sleepdawg://openApp"))
         .containerBackground(for: .widget) {
-            Color.clear
+            .thinMaterial
         }
     }
 }
