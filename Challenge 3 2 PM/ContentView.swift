@@ -37,7 +37,7 @@ struct ContentView: View {
             VStack(spacing: 16) {
                 DogImageView(dogManager: dogManager)
                 if !isNameFinal {
-                    Text("Choose a name for your dog!")
+                    Text("don't leave dawg nameless 🙁")
                     
                     TextField("E.g. dawg", text: $dogManager.name)
                         .textFieldStyle(.roundedBorder)
@@ -54,12 +54,12 @@ struct ContentView: View {
                         .font(.largeTitle)
                 }
                 
-                Text("go play with it!")
+                Text("play with me!")
                     .font(.headline)
                 Button {
                     isPickerPresented = true
                 } label: {
-                    Text("Bedtime")
+                    Text("sleepy time 😴")
                         .foregroundStyle(.black)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -72,7 +72,7 @@ struct ContentView: View {
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
                 } label: {
-                    Text("Apps blocked")
+                    Text("paws off apps 🚫")
                         .foregroundStyle(.black)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -82,7 +82,7 @@ struct ContentView: View {
                 Button {
                     isEvolutionPresented = true
                 } label: {
-                    Text("Leaderboard")
+                    Text("top dawgs 🏆")
                         .foregroundStyle(.black)
                         .padding()
                         .frame(maxWidth: .infinity)

@@ -17,11 +17,13 @@ struct DogStatsView: View {
                 .bold()
                 .font(.largeTitle)
             DogImageView(dogManager: dogManager)
-            Text("Level: \(dogManager.level)")
-            Text("Emotion: \(dogManager.emotion.rawValue.capitalized)")
-            Text("Total hearts: \(dogManager.hearts)")
-            Text("Number of hearts till evolution:")
-            Text("\(dogManager.heartsToNextEvolution())❤️")
+            List {
+                Text("**Level:** \(dogManager.level)")
+                Text("**Emotion:** \(dogManager.emotion.rawValue.capitalized)")
+                Text("**Total hearts:** \(dogManager.hearts)")
+                Text("**hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
+            }
+            .listStyle(.plain)
         }
         .padding()
     }
