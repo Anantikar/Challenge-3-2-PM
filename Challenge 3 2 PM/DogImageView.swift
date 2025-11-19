@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DogImageView: View {
     @State private var isJumping = false
-    @Bindable var dogManager: DogManager
+    @ObservedObject var dogManager: DogManager
     var body: some View {
         VStack {
             Image("dog\(dogManager.level)\(dogManager.emotion.rawValue)")

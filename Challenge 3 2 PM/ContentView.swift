@@ -25,7 +25,7 @@ extension Color {
 }
 
 struct ContentView: View {
-    @Environment(\.modelContext) var modelContext
+    @StateObject var dogManager = DogManager()
     @ObservedObject var manager: ShieldManager
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
@@ -70,7 +70,13 @@ struct ContentView: View {
                 }label:{
                     Text("Hearts + 50")
                 }
-                Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue) ")
+                
+                Button{
+                    dogManager.hearts = 0
+                    dogManager.name = ""
+                }label:{
+                    Text("Reset identity")
+                }
                 
                 Button {
                     isEvolutionPresented = true

@@ -9,7 +9,7 @@ struct PickerView: View {
     @State private var bedtime = Date.now
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
-    @Bindable var dogManager: DogManager
+    @ObservedObject var dogManager: DogManager
 
     var body: some View {
         VStack {
