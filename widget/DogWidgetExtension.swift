@@ -17,6 +17,7 @@ struct DogWidgetExtension: Widget {
         )
         .configurationDisplayName("dawg")
         .description("dawgg")
+        .contentMarginsDisabled()
         .supportedFamilies([
             .systemSmall
         ])
