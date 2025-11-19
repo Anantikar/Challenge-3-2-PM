@@ -21,7 +21,7 @@ struct DogStatsView: View {
                 Text("**Level:** \(dogManager.level)")
                 Text("**Emotion:** \(dogManager.emotion.rawValue.capitalized)")
                 Text("**Total hearts:** \(dogManager.hearts)")
-                Text("**hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
+                Text("**Hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
             }
             .listStyle(.plain)
         }
