@@ -35,10 +35,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                
                 DogImageView(dogManager: dogManager)
-                
-                // NAME ENTRY SECTION
                 if !isNameFinal {
                     Text("Choose a name for your dog!")
                     
@@ -52,8 +49,6 @@ struct ContentView: View {
                     }
                     .padding(.bottom)
                 }
-                
-                // AFTER NAME IS SAVED
                 if isNameFinal {
                     Text("\(dogManager.name) is sad")
                         .font(.largeTitle)
@@ -61,9 +56,6 @@ struct ContentView: View {
                 
                 Text("go play with it!")
                     .font(.headline)
-                
-                
-                // BEDTIME BUTTON
                 Button {
                     isPickerPresented = true
                 } label: {
@@ -77,9 +69,6 @@ struct ContentView: View {
                 .sheet(isPresented: $isPickerPresented) {
                     PickerView(dogManager: dogManager)
                 }
-                
-                
-                // APPS BLOCKED LINK
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
                 } label: {
@@ -90,19 +79,6 @@ struct ContentView: View {
                         .background(Color(hex: "#d0e4f7"))
                         .cornerRadius(20)
                 }
-                
-                
-                // DEBUG BUTTON
-                Button {
-                    dogManager.hearts += 50
-                } label: {
-                    Text("Hearts + 50")
-                }
-                
-                Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue)")
-                
-                
-                // LEADERBOARD
                 Button {
                     isEvolutionPresented = true
                 } label: {

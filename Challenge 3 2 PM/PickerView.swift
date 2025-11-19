@@ -48,23 +48,6 @@ struct PickerView: View {
                 Text("Save")
             }
             .padding(.top)
-
-            // Sanity test button
-            Button("Test notification in 10s") {
-                let content = UNMutableNotificationContent()
-                content.title = "Test"
-                content.body = "This should appear in 10 seconds."
-                content.sound = .default
-
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-                let request = UNNotificationRequest(identifier: "test_notification_10s",
-                                                    content: content,
-                                                    trigger: trigger)
-                UNUserNotificationCenter.current().add(request) { error in
-                    print(error?.localizedDescription ?? "Scheduled test notification")
-                }
-            }
-            .padding(.top)
         }
         .onAppear {
             loadTimes()
@@ -95,7 +78,7 @@ struct PickerView: View {
         }
     }
 
-    // If you adopted the improved one-shot scheduling from earlier, keep that here.
+    // Schedules next occurrence only; if today's time has passed, schedules for tomorrow.
     private func scheduleBedtimeReminder() {
         let calendar = Calendar.current
         let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
