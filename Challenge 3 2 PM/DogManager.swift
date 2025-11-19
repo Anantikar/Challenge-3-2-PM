@@ -17,6 +17,7 @@ class DogManager : ObservableObject{
         didSet{
             evolve()
             saveToSharedDefaults()
+            GameCenterManager.shared.submitHeartsToLeaderboard(hearts)
         }
     }
     @Published var name: String

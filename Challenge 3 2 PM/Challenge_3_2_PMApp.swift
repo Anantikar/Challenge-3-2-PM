@@ -12,7 +12,7 @@ struct Challenge_3_2_PMApp: App {
     @Environment(\.openURL) var openURL
     init() {
         // Authenticate when the app launches
-        GameCenterManager.shared.authenticateUser()
+        GameCenterManager.shared.authenticate()
     }
 
     var body: some Scene {

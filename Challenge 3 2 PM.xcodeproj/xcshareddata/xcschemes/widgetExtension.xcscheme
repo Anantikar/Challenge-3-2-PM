@@ -79,25 +79,19 @@
       </RemoteRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "_XCWidgetKind"
-            value = ""
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "_XCWidgetDefaultView"
             value = "timeline"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetFamily"
-            value = "systemMedium"
+            value = "systemSmall"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetKind"
             value = "dog widget extension"
             isEnabled = "YES">
-         </EnvironmentVariable>
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

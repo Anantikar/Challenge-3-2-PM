@@ -4,7 +4,6 @@
 //
 //  Created by T Krobot on 17/11/25.
 //
-
 import WidgetKit
 import Foundation
 import SwiftUI
@@ -15,18 +14,18 @@ struct DogEntry: TimelineEntry {
 }
 struct Dog {
     var evolutionList: [String] = [
-        "dog1widget",
-        "dog2widget",
-        "dog3widget",
-        "dog4widget",
-        "dog5widget"
+        "dog1dog",
+        "dog2dog",
+        "dog3dog",
+        "dog4dog",
+        "dog5dog"
     ]
 }
 struct DogProvider: TimelineProvider {
     private let dogInfo = Dog()
     private let placeholderEntry = DogEntry(
         date: Date(),
-        imageName: "dog1widget"
+        imageName: "dog1dog"
     )
     func placeholder(in context: Context) -> DogEntry {
         return placeholderEntry
@@ -49,18 +48,16 @@ struct DogProvider: TimelineProvider {
         completion(timeline)
     }
 }
+
 struct DogWidgetView: View {
     var entry: DogProvider.Entry
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             Image(entry.imageName)
                 .resizable()
                 .scaledToFit()
         }
         .widgetURL(URL(string: "sleepdawg://openApp"))
-        .foregroundStyle(.white)
-        .containerBackground(for: .widget){
-            Color.cyan
-        }
     }
 }
+

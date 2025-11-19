@@ -18,7 +18,7 @@ struct DogWidgetExtension: Widget {
         .configurationDisplayName("dawg")
         .description("dawgg")
         .supportedFamilies([
-            .systemSmall,
+            .systemSmall
         ])
     }
 }
@@ -27,21 +27,12 @@ struct DogWidgetExtension: Widget {
     DogWidgetExtension()
 } timeline: {
     let now = Date()
-    let dogLevels = [
-        "dog1widget",
-        "dog2widget",
-        "dog3widget",
-        "dog4widget",
-        "dog5widget"
-    ]
-    let entries: [DogEntry] = dogLevels.enumerated().map { index, name in
-        DogEntry(
-            date: now.addingTimeInterval(Double(index * 60)),
-            imageName: name
-        )
-    }
-    // Emit entries directly; do not wrap them in Timeline(...)
-    for entry in entries {
-        entry
-    }
+    
+    DogEntry(date: now, imageName: "dog1widget")
+    DogEntry(date: now.addingTimeInterval(60), imageName: "dog2widget")
+    DogEntry(date: now.addingTimeInterval(120), imageName: "dog3widget")
+    DogEntry(date: now.addingTimeInterval(180), imageName: "dog4widget")
+    DogEntry(date: now.addingTimeInterval(240), imageName: "dog5widget")
 }
+
+
