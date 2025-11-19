@@ -12,6 +12,7 @@ private let leaderboardID: String = "sleepdawg.leaderboard"
 struct EvolutionView: View {
     @StateObject private var gcManager = GameCenterManager.shared
     @ObservedObject var dogManager: DogManager
+    @State private var isShowingLeaderboard = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -38,7 +39,7 @@ struct EvolutionView: View {
 
             // Show leaderboard button
             Button("Show Leaderboard") {
-                showLeaderboard()
+                isShowingLeaderboard = true
             }
             .buttonStyle(.bordered)
             .disabled(!gcManager.isAuthenticated)
@@ -48,33 +49,45 @@ struct EvolutionView: View {
                 GameCenterManager.shared.authenticate()
             }
         }
+        .sheet(isPresented: $isShowingLeaderboard) {
+            GameCenterLeaderboardView(leaderboardID: leaderboardID)
+        }
     }
 }
-func showLeaderboard() {
-    guard GKLocalPlayer.local.isAuthenticated else {
-        print("⚠️ Player not authenticated; cannot show leaderboard.")
-        return
-    }
 
-    let gcVC = GKGameCenterViewController(
-        leaderboardID: leaderboardID,
-        playerScope: .global,
-        timeScope: .allTime
-    )
-    gcVC.gameCenterDelegate = GameCenterDelegate.shared
-
-    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-       let rootVC = scene.windows.first?.rootViewController {
-        rootVC.present(gcVC, animated: true)
-    } else {
-        print("⚠️ Could not find root view controller.")
-    }
-}
 class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
     static let shared = GameCenterDelegate()
 
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true)
+    }
+}
+
+struct GameCenterLeaderboardView: UIViewControllerRepresentable {
+    let leaderboardID: String
+
+    func makeUIViewController(context: Context) -> GKGameCenterViewController {
+        // Ensure the player is authenticated before presenting
+        if !GKLocalPlayer.local.isAuthenticated {
+            GameCenterManager.shared.authenticate()
+        }
+        let vc = GKGameCenterViewController(leaderboardID: leaderboardID, playerScope: .global, timeScope: .allTime)
+        vc.gameCenterDelegate = context.coordinator
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: GKGameCenterViewController, context: Context) {
+        // No dynamic updates needed
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+
+    final class Coordinator: NSObject, GKGameCenterControllerDelegate {
+        func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+            gameCenterViewController.dismiss(animated: true)
+        }
     }
 }
 

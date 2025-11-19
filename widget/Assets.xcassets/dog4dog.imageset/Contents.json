@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "dog4dog.png",
+      "filename" : "dog4dog 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "dog4dog 1.png",
+      "filename" : "dog4dog 2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "dog4dog 2.png",
+      "filename" : "dog4dog 3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
