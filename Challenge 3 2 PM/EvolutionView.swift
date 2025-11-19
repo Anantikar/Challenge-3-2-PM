@@ -15,34 +15,35 @@ struct EvolutionView: View {
     @State private var isShowingLeaderboard = false
     
     var body: some View {
-        VStack(spacing: 20) {
-            DogImageView(dogManager: dogManager)
-
-            // Status / Sign-in button
-            Group {
-                if gcManager.isAuthenticated {
-                    Text("Signed in as \(GKLocalPlayer.local.displayName)")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("Not signed in to Game Center")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    Button("Sign in to Game Center") {
-                        GameCenterManager.shared.authenticate()
+        NavigationStack {
+            VStack(spacing: 20) {
+                DogImageView(dogManager: dogManager)
+                Text("ruff ruff! be the best dawg of them all!")
+                    .font(.caption)
+                Group {
+                    if gcManager.isAuthenticated {
+                        Text("Signed in as \(GKLocalPlayer.local.displayName)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Not signed in to Game Center")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        
+                        Button("Sign in to Game Center") {
+                            GameCenterManager.shared.authenticate()
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
+                    
                 }
-
+                Button("Show Leaderboard") {
+                    isShowingLeaderboard = true
+                }
+                .buttonStyle(.bordered)
+                .disabled(!gcManager.isAuthenticated)
             }
-
-            // Show leaderboard button
-            Button("Show Leaderboard") {
-                isShowingLeaderboard = true
-            }
-            .buttonStyle(.bordered)
-            .disabled(!gcManager.isAuthenticated)
+            .navigationTitle("Leaderboard")
         }
         .onAppear {
             if !gcManager.isAuthenticated {
@@ -67,7 +68,6 @@ struct GameCenterLeaderboardView: UIViewControllerRepresentable {
     let leaderboardID: String
 
     func makeUIViewController(context: Context) -> GKGameCenterViewController {
-        // Ensure the player is authenticated before presenting
         if !GKLocalPlayer.local.isAuthenticated {
             GameCenterManager.shared.authenticate()
         }
@@ -77,7 +77,6 @@ struct GameCenterLeaderboardView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: GKGameCenterViewController, context: Context) {
-        // No dynamic updates needed
     }
 
     func makeCoordinator() -> Coordinator {
@@ -90,8 +89,6 @@ struct GameCenterLeaderboardView: UIViewControllerRepresentable {
         }
     }
 }
-
-// MARK: - Preview
 #Preview {
     EvolutionView(dogManager: DogManager())
 }

@@ -43,7 +43,6 @@ struct PickerView: View {
         }
         .onAppear {
             loadTimes()
-            // Ask for notifications permission
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                 if let error = error {
                     print("Notification permission error: \(error.localizedDescription)")
@@ -65,8 +64,6 @@ struct PickerView: View {
             bedtime = Date(timeIntervalSince1970: savedBedtime)
         }
     }
-
-    // Schedules next occurrence only; if today's time has passed, schedules for tomorrow.
     private func scheduleBedtimeReminder() {
         let calendar = Calendar.current
         let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
