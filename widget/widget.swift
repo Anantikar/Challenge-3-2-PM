@@ -58,8 +58,6 @@ struct DogWidgetView: View {
                 .scaledToFit()
         }
         .widgetURL(URL(string: "sleepdawg://openApp"))
-        .containerBackground(for: .widget) {
-            .thinMaterial
-        }
+        .containerBackground(.thinMaterial, for: .widget)
     }
 }
