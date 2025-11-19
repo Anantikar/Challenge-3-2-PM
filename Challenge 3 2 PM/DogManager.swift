@@ -8,7 +8,7 @@
 
 import WidgetKit
 enum Emotion: String {
-    case happy, sad, standard, dead
+    case happy, sad, chill, dead
 }
 
 class DogManager : ObservableObject{
@@ -39,7 +39,7 @@ class DogManager : ObservableObject{
             UserDefaults.standard.object(forKey: "dog_name") != nil
         
         if hasLaunchedBefore {
-            self.emotion = Emotion(rawValue: UserDefaults.standard.string(forKey: "dog_emotion") ?? "standard") ?? .standard
+            self.emotion = Emotion(rawValue: UserDefaults.standard.string(forKey: "dog_emotion") ?? "standard") ?? .chill
             self.level = UserDefaults.standard.integer(forKey: "dog_level")
             self.hearts = UserDefaults.standard.integer(forKey: "dog_hearts")
             self.name = UserDefaults.standard.string(forKey: "dog_name") ?? ""
@@ -80,11 +80,11 @@ class DogManager : ObservableObject{
         (750, .sad, 4),
         (850, .sad, 5),
         
-        (1000, .standard, 1),
-        (1150, .standard, 2),
-        (1300, .standard, 3),
-        (1450, .standard, 4),
-        (1600, .standard, 5),
+        (1000, .chill, 1),
+        (1150, .chill, 2),
+        (1300, .chill, 3),
+        (1450, .chill, 4),
+        (1600, .chill, 5),
         
         (1800, .happy, 1),
         (2000, .happy, 2),
