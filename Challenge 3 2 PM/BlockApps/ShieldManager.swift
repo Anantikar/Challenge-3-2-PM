@@ -18,6 +18,12 @@ class ShieldManager: ObservableObject{
     }
     @Published var isLocked: Bool = false
     
+    @Published var wasEmergencyused: Bool = false
+    
+    @Published var awardConfirmationShown: Bool = false
+    
+    @ObservedObject var dogManager = DogManager()
+    
     private let store = ManagedSettingsStore()
     private var timer: Timer?
     
@@ -97,18 +103,21 @@ class ShieldManager: ObservableObject{
     }
     
     func updateLockState() {
-        if let blockUntil = blockUntil {
-            if blockUntil > Date() {
-                isLocked = true
-            } else {
-                isLocked = false
-                unshieldActivities()
-            }
+        guard let blockUntil = blockUntil else {
+            return
+        }
+        if blockUntil > Date() {
+            isLocked = true
         } else {
-            isLocked = false
+
+            if isLocked == true && wasEmergencyused == false {
+                awardConfirmationShown = true
+            }
+
+            wasEmergencyused = false
             unshieldActivities()
         }
     }
+
 }
-
-
+    
