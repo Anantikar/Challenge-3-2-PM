@@ -11,21 +11,22 @@ import SwiftUI
 
 struct DogEntry: TimelineEntry {
     let date: Date
-    let dogEvolution: String
+    let imageName: String
 }
 struct Dog {
     var evolutionList: [String] = [
-        "deadDog",
-        "sadDog",
-        "standardDog",
-        "happyDog",
+        "dog1widget",
+        "dog2widget",
+        "dog3widget",
+        "dog4widget",
+        "dog5widget"
     ]
 }
 struct DogProvider: TimelineProvider {
     private let dogInfo = Dog()
     private let placeholderEntry = DogEntry(
         date: Date(),
-        dogEvolution: ""
+        imageName: "dog1widget"
     )
     func placeholder(in context: Context) -> DogEntry {
         return placeholderEntry
@@ -36,17 +37,14 @@ struct DogProvider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<DogEntry>) -> Void) {
-        let currentDate = Date()
-        var entries : [DogEntry] = []
-        
-        for minuteOffset in 0 ..< 60 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-            let evolution = dogInfo.evolutionList[Int.random(in: 0...dogInfo.evolutionList.count-1)]
-            let entry = DogEntry(date: entryDate, dogEvolution: evolution)
-            entries.append(entry)
-        }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        let shared = SharedDogDefaults.shared
+        var level = shared.integer(forKey: "level")
+        // clamp level to valid range
+        level = level > 0 ? level - 1 : level
+        let clampedLevel = min(max(level, 0), dogInfo.evolutionList.count-1)
+        let imageName = dogInfo.evolutionList[clampedLevel]
+        let entry = DogEntry(date: Date(), imageName: imageName)
+        let timeline = Timeline(entries: [entry], policy: .never)
         
         completion(timeline)
     }
@@ -55,16 +53,11 @@ struct DogWidgetView: View {
     var entry: DogProvider.Entry
     var body: some View {
         VStack(alignment: .leading){
-            HStack{
-                Text("dawg")
-            }
-            .font(.title3)
-            .bold()
-            .padding(.bottom, 8)
-            
-            Text(entry.dogEvolution)
-                .font(.caption)
+            Image(entry.imageName)
+                .resizable()
+                .scaledToFit()
         }
+        .widgetURL(URL(string: "sleepdawg://openApp"))
         .foregroundStyle(.white)
         .containerBackground(for: .widget){
             Color.cyan

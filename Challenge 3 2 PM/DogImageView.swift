@@ -15,7 +15,7 @@ struct DogImageView: View {
             Image("dog\(dogManager.level)\(dogManager.emotion.rawValue)")
                 .resizable()
                 .scaledToFit()
-                .offset(y: isJumping ? -35 : 0)
+                .offset(y: isJumping ? -25 : 0)
                 .animation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0), value: isJumping)
                 .onTapGesture {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0)) {

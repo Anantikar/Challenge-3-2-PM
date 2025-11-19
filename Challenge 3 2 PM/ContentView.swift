@@ -100,7 +100,6 @@ struct ContentView: View {
     }
 }
 
-
 #Preview {
     ContentView(manager: ShieldManager())
 }

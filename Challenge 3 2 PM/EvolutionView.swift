@@ -16,18 +16,20 @@ struct EvolutionView: View {
         VStack(spacing: 20) {
             DogImageView(dogManager: dogManager)
             
-            // Game Center status
-            if gcManager.isAuthenticated {
-                Text("Signed in as \(GKLocalPlayer.local.displayName)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("Not signed in to Game Center")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                
-                Button("Sign in to Game Center") {
-                    gcManager.authenticateUser()
+            Group {
+                if gcManager.isAuthenticated {
+                    Text("Signed in as \(GKLocalPlayer.local.displayName)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("Not signed in to Game Center")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    
+                    Button("Sign in to Game Center") {
+                        GameCenterManager.shared.authenticateUser()
+                    }
+                    .buttonStyle(.bordered)
                 }
                 .buttonStyle(.bordered)
             }
@@ -38,52 +40,16 @@ struct EvolutionView: View {
             }
             .buttonStyle(.bordered)
             .disabled(!gcManager.isAuthenticated)
-        }
-        .padding()
-        .onAppear {
-            if !gcManager.isAuthenticated {
-                gcManager.authenticateUser()
-            }
-        }
-    }
-    
-    // MARK: - Show Leaderboard
-    func showLeaderboard() {
-        guard GKLocalPlayer.local.isAuthenticated else {
-            print("⚠️ Player not authenticated; cannot show leaderboard.")
-            return
-        }
-        
-        // Present asynchronously on the main thread
-        DispatchQueue.main.async {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootVC = windowScene.keyWindow?.rootViewController {
-                
-                let gcVC = GKGameCenterViewController(
-                    leaderboardID: leaderboardID,
-                    playerScope: .global,
-                    timeScope: .allTime
-                )
-                gcVC.gameCenterDelegate = GameCenterDelegate.shared
-                
-                rootVC.present(gcVC, animated: true)
-            } else {
-                print("⚠️ Could not find root view controller.")
+            .onAppear {
+                if !gcManager.isAuthenticated {
+                    GameCenterManager.shared.authenticateUser()
+                }
             }
         }
     }
 }
+// Use a String for the leaderboard identifier as required by GameKit
 
-// MARK: - Game Center Delegate
-class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
-    static let shared = GameCenterDelegate()
-    
-    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismiss(animated: true)
-    }
-}
-
-// MARK: - Score reporting
 func reportScore(_ score: Int) {
     guard GKLocalPlayer.local.isAuthenticated else {
         print("⚠️ Player not authenticated; cannot submit score.")
