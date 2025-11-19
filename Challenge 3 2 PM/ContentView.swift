@@ -50,7 +50,7 @@ struct ContentView: View {
                     .padding(.bottom)
                 }
                 if isNameFinal {
-                    Text("\(dogManager.name) is sad")
+                    Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
                         .font(.largeTitle)
                 }
                 
