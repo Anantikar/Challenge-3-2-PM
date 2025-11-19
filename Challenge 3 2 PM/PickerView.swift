@@ -33,14 +33,6 @@ struct PickerView: View {
                 DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
                     .padding()
             }
-            HStack {
-                Text("When does \(dogManager.name) wanna wake up")
-                    .font(.headline)
-                    .padding()
-                DatePicker("", selection: $wakeup, displayedComponents: .hourAndMinute)
-                    .padding()
-            }
-
             Button {
                 saveTimes()
                 scheduleBedtimeReminder()
@@ -65,16 +57,12 @@ struct PickerView: View {
     private func saveTimes() {
         let defaults = UserDefaults.standard
         defaults.set(bedtime.timeIntervalSince1970, forKey: SleepKeys.bedtime)
-        defaults.set(wakeup.timeIntervalSince1970, forKey: SleepKeys.wakeup)
     }
 
     private func loadTimes() {
         let defaults = UserDefaults.standard
         if let savedBedtime = defaults.object(forKey: SleepKeys.bedtime) as? Double {
             bedtime = Date(timeIntervalSince1970: savedBedtime)
-        }
-        if let savedWakeup = defaults.object(forKey: SleepKeys.wakeup) as? Double {
-            wakeup = Date(timeIntervalSince1970: savedWakeup)
         }
     }
 
