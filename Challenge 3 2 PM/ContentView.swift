@@ -97,8 +97,12 @@ struct ContentView: View {
             .padding()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Stats") {
+                    Button {
                         isStatsPresented.toggle()
+                    } label: {
+                        Image(systemName: "pawprint.fill")
+                            .imageScale(.large)
+                            .symbolRenderingMode(.hierarchical)
                     }
                     .sheet(isPresented: $isStatsPresented) {
                         DogStatsView(dogManager: dogManager)

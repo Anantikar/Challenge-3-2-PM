@@ -17,8 +17,10 @@ struct AppsOverviewView: View {
         VStack {
             if manager.isLocked, let unlockTime = manager.blockUntil {
                 Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
+                    .font(.largeTitle)
             } else {
                 Text("No apps currently locked")
+                    .font(.largeTitle)
             }
             NavigationLink("Edit") {
                 BlockerView(
@@ -28,16 +30,16 @@ struct AppsOverviewView: View {
             }
             .disabled(manager.isLocked)
             .opacity(manager.isLocked ? 0.7 : 1.0)
-            
                         
             Button{
                 showConfirmation.toggle()
             }label:{
-                Image(systemName: "arrow.2.circlepath.circle")
+                Image(systemName: "exclamationmark.triangle")
                 Text("Emergency stop")
             }
             .disabled(!manager.isLocked)
             .opacity(!manager.isLocked ? 0.7 : 1.0)
+
         }
         .task{
             do{
