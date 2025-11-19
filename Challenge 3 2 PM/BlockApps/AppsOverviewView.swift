@@ -46,12 +46,22 @@ struct AppsOverviewView: View {
                 print("Failed to get authorization: \(error)")
             }
         }
+        .confirmationDialog("100 Hearts gained", isPresented: $manager.awardConfirmationShown, titleVisibility: .hidden){
+            Button{
+                manager.awardConfirmationShown.toggle()
+                dogManager.hearts += 100
+            }label: {
+                Text("OK")
+            }
+        }message: {
+            Text("Congratulations! \(dogManager.name) has gained 100 hearts!")
+        }
         .confirmationDialog("Emergency stop", isPresented: $showConfirmation, titleVisibility: .hidden){
             Button(role: .destructive){
                 manager.unshieldActivities()
-                manager.isLocked = false
                 showConfirmation.toggle()
                 dogManager.hearts -= 50
+                manager.wasEmergencyused = true
             }label: {
                 Text("Emergency Stop")
             }
