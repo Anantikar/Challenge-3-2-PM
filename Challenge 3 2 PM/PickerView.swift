@@ -47,6 +47,24 @@ struct PickerView: View {
             } label: {
                 Text("Save")
             }
+            .padding(.top)
+
+            // Sanity test button
+            Button("Test notification in 10s") {
+                let content = UNMutableNotificationContent()
+                content.title = "Test"
+                content.body = "This should appear in 10 seconds."
+                content.sound = .default
+
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                let request = UNNotificationRequest(identifier: "test_notification_10s",
+                                                    content: content,
+                                                    trigger: trigger)
+                UNUserNotificationCenter.current().add(request) { error in
+                    print(error?.localizedDescription ?? "Scheduled test notification")
+                }
+            }
+            .padding(.top)
         }
         .onAppear {
             loadTimes()
@@ -77,44 +95,35 @@ struct PickerView: View {
         }
     }
 
-    // MARK: - Notifications
-
+    // If you adopted the improved one-shot scheduling from earlier, keep that here.
     private func scheduleBedtimeReminder() {
-        // Build next occurrence of bedtime today/tomorrow with only hour/minute components
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute], from: bedtime)
+        let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
+        guard let hour = bedtimeComponents.hour, let minute = bedtimeComponents.minute else { return }
 
-        guard let hour = components.hour, let minute = components.minute else {
-            return
-        }
-
-        // 30 minutes before bedtime
-        var beforeComponents = DateComponents()
-        beforeComponents.hour = hour
-        beforeComponents.minute = minute
-
-        // Convert to a Date today, subtract 30 minutes, then extract hour/minute again for repeating trigger
-        let today = Date()
-        var todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
+        var todayComponents = calendar.dateComponents([.year, .month, .day], from: Date())
         todayComponents.hour = hour
         todayComponents.minute = minute
 
-        let targetToday = calendar.date(from: todayComponents) ?? today
+        let targetToday = calendar.date(from: todayComponents) ?? Date()
         let reminderDate = calendar.date(byAdding: .minute, value: -30, to: targetToday) ?? targetToday
 
-        var reminderTimeComponents = calendar.dateComponents([.hour, .minute], from: reminderDate)
-        // If subtracting 30 min crossed to previous day, reminderTimeComponents will still be valid for repeating daily
+        let nextReminderDate: Date
+        if reminderDate <= Date() {
+            nextReminderDate = calendar.date(byAdding: .day, value: 1, to: reminderDate) ?? reminderDate.addingTimeInterval(86400)
+        } else {
+            nextReminderDate = reminderDate
+        }
 
-        // Create the notification content
+        let triggerDateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: nextReminderDate)
+
         let content = UNMutableNotificationContent()
         content.title = "Bedtime soon"
         content.body = "It's 30 minutes before \(dogManager.name.isEmpty ? "bedtime" : "\(dogManager.name)'s bedtime")."
         content.sound = .default
 
-        // Repeating daily at that time
-        let trigger = UNCalendarNotificationTrigger(dateMatching: reminderTimeComponents, repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
 
-        // Replace any existing request with same identifier
         let request = UNNotificationRequest(identifier: NotificationKeys.bedtimeReminderID,
                                             content: content,
                                             trigger: trigger)
@@ -125,7 +134,7 @@ struct PickerView: View {
             if let error = error {
                 print("Failed to schedule bedtime reminder: \(error.localizedDescription)")
             } else {
-                print("Scheduled bedtime reminder at \(String(format: "%02d:%02d", reminderTimeComponents.hour ?? 0, reminderTimeComponents.minute ?? 0)) daily.")
+                print("Scheduled bedtime reminder for \(nextReminderDate)")
             }
         }
     }
