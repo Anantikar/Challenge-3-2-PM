@@ -72,7 +72,7 @@ struct AppsOverviewView: View {
             }label: {
                 Text("Emergency Stop")
             }
-        }message: {
+        } message: {
             Text("Are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
         }
     }
