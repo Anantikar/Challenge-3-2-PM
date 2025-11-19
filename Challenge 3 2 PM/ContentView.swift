@@ -28,6 +28,7 @@ struct ContentView: View {
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
     @State private var isStatsPresented = false
+    
     @State private var isNameFinal = false
     @StateObject var dogManager = DogManager()
     
@@ -40,11 +41,13 @@ struct ContentView: View {
                 // NAME ENTRY SECTION
                 if !isNameFinal {
                     Text("Choose a name for your dog!")
-                    TextField("E.g. dawg ", text: $dogManager.name)
+                    
+                    TextField("E.g. dawg", text: $dogManager.name)
                         .textFieldStyle(.roundedBorder)
                         .padding(.horizontal)
                     
                     Button("Save name") {
+                        // dogManager automatically saves the name
                         isNameFinal = true
                     }
                     .padding(.bottom)
@@ -58,6 +61,7 @@ struct ContentView: View {
                 
                 Text("go play with it!")
                     .font(.headline)
+                
                 
                 // BEDTIME BUTTON
                 Button {
@@ -74,7 +78,8 @@ struct ContentView: View {
                     PickerView(dogManager: dogManager)
                 }
                 
-                // APPS BLOCKED NAVIGATION
+                
+                // APPS BLOCKED LINK
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
                 } label: {
@@ -86,7 +91,8 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 
-                // HEARTS TEST BUTTON
+                
+                // DEBUG BUTTON
                 Button {
                     dogManager.hearts += 50
                 } label: {
@@ -95,7 +101,8 @@ struct ContentView: View {
                 
                 Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue)")
                 
-                // LEADERBOARD BUTTON
+                
+                // LEADERBOARD
                 Button {
                     isEvolutionPresented = true
                 } label: {
@@ -109,6 +116,7 @@ struct ContentView: View {
                 .sheet(isPresented: $isEvolutionPresented) {
                     EvolutionView(dogManager: dogManager)
                 }
+                
             }
             .padding()
             .toolbar {
@@ -119,6 +127,14 @@ struct ContentView: View {
                     .sheet(isPresented: $isStatsPresented) {
                         DogStatsView(dogManager: dogManager)
                     }
+                }
+            }
+            
+            
+            // 👇 THIS LOADS THE SAVED DOG NAME ON APP START
+            .onAppear {
+                if !dogManager.name.isEmpty {
+                    isNameFinal = true
                 }
             }
         }
