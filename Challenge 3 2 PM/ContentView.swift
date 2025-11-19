@@ -28,18 +28,38 @@ struct ContentView: View {
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
     @State private var isStatsPresented = false
+    @State private var isNameFinal = false
     @StateObject var dogManager = DogManager()
+    
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 16) {
+                
                 DogImageView(dogManager: dogManager)
-                Text("Choose a name for your dog!")
-                TextField("E.g. dawg ", text: $dogManager.name)
-                    .textFieldStyle(.roundedBorder)
-                Text("\(dogManager.name) is sad")
-                    .font(.largeTitle)
+                
+                // NAME ENTRY SECTION
+                if !isNameFinal {
+                    Text("Choose a name for your dog!")
+                    TextField("E.g. dawg ", text: $dogManager.name)
+                        .textFieldStyle(.roundedBorder)
+                        .padding(.horizontal)
+                    
+                    Button("Save name") {
+                        isNameFinal = true
+                    }
+                    .padding(.bottom)
+                }
+                
+                // AFTER NAME IS SAVED
+                if isNameFinal {
+                    Text("\(dogManager.name) is sad")
+                        .font(.largeTitle)
+                }
+                
                 Text("go play with it!")
-                    .font(.largeTitle)
+                    .font(.headline)
+                
+                // BEDTIME BUTTON
                 Button {
                     isPickerPresented = true
                 } label: {
@@ -53,6 +73,8 @@ struct ContentView: View {
                 .sheet(isPresented: $isPickerPresented) {
                     PickerView(dogManager: dogManager)
                 }
+                
+                // APPS BLOCKED NAVIGATION
                 NavigationLink {
                     AppsOverviewView(manager: manager, dogManager: dogManager)
                 } label: {
@@ -64,13 +86,16 @@ struct ContentView: View {
                         .cornerRadius(20)
                 }
                 
-                Button{
+                // HEARTS TEST BUTTON
+                Button {
                     dogManager.hearts += 50
-                }label:{
+                } label: {
                     Text("Hearts + 50")
                 }
-                Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue) ")
                 
+                Text("Hearts: \(dogManager.hearts). Lvl: \(dogManager.level). emo: \(dogManager.emotion.rawValue)")
+                
+                // LEADERBOARD BUTTON
                 Button {
                     isEvolutionPresented = true
                 } label: {
@@ -85,12 +110,13 @@ struct ContentView: View {
                     EvolutionView(dogManager: dogManager)
                 }
             }
-            .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button("Stats"){
+            .padding()
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Stats") {
                         isStatsPresented.toggle()
                     }
-                    .sheet(isPresented: $isStatsPresented){
+                    .sheet(isPresented: $isStatsPresented) {
                         DogStatsView(dogManager: dogManager)
                     }
                 }
@@ -102,3 +128,4 @@ struct ContentView: View {
 #Preview {
     ContentView(manager: ShieldManager())
 }
+

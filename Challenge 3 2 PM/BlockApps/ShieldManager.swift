@@ -10,16 +10,23 @@ import FamilyControls
 import ManagedSettings
 
 class ShieldManager: ObservableObject{
-    @Published var discouragedSelections = FamilyActivitySelection()
-    @Published var blockUntil: Date? = nil
+    @Published var discouragedSelections = FamilyActivitySelection(){
+        didSet { saveSelection() }
+    }
+    @Published var blockUntil: Date? = nil{
+        didSet { saveBlockUntil() }
+    }
     @Published var isLocked: Bool = false
     
     private let store = ManagedSettingsStore()
     private var timer: Timer?
-
-        init() {
-            startTimer()
-        }
+    
+    init() {
+        loadSelection()
+        loadBlockUntil()
+        reapplyShieldIfNeeded()
+        startTimer()
+    }
     
     func shieldActivities(until date: Date?) {
         store.clearAllSettings()
@@ -41,27 +48,67 @@ class ShieldManager: ObservableObject{
         blockUntil = nil
     }
     
-    func startTimer() {
-            timer?.invalidate()
-
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                self.updateLockState()
-            }
+    private func saveSelection() {
+        do {
+            let data = try JSONEncoder().encode(discouragedSelections)
+            UserDefaults.standard.set(data, forKey: "discouragedSelections")
+        } catch {
+            print("Failed to save selections: \(error)")
         }
-
-        func updateLockState() {
-            if let blockUntil = blockUntil {
-                if blockUntil > Date() {
-                    isLocked = true
-                } else {
-                    isLocked = false
-                    unshieldActivities()
-                }
+    }
+    
+    private func loadSelection() {
+        guard let data = UserDefaults.standard.data(forKey: "discouragedSelections") else { return }
+        if let decoded = try? JSONDecoder().decode(FamilyActivitySelection.self, from: data) {
+            discouragedSelections = decoded
+        }
+    }
+    
+    private func saveBlockUntil() {
+        if let date = blockUntil {
+            UserDefaults.standard.set(date.timeIntervalSince1970, forKey: "blockUntil")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "blockUntil")
+        }
+    }
+    
+    private func loadBlockUntil() {
+        let time = UserDefaults.standard.double(forKey: "blockUntil")
+        if time > 0 {
+            blockUntil = Date(timeIntervalSince1970: time)
+        }
+    }
+    
+    private func reapplyShieldIfNeeded() {
+        guard let blockUntil = blockUntil else { return }
+        if blockUntil > Date() {
+            shieldActivities(until: blockUntil)
+        } else {
+            unshieldActivities()
+        }
+    }
+    
+    func startTimer() {
+        timer?.invalidate()
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.updateLockState()
+        }
+    }
+    
+    func updateLockState() {
+        if let blockUntil = blockUntil {
+            if blockUntil > Date() {
+                isLocked = true
             } else {
                 isLocked = false
                 unshieldActivities()
             }
+        } else {
+            isLocked = false
+            unshieldActivities()
         }
+    }
 }
 
 

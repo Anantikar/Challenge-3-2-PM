@@ -6,12 +6,13 @@
 import SwiftUI
 import GameKit
 
+
 private let leaderboardID: String = "sleepdawg.leaderboard"
 
 struct EvolutionView: View {
     @StateObject private var gcManager = GameCenterManager.shared
     @ObservedObject var dogManager: DogManager
-
+    
     var body: some View {
         VStack(spacing: 20) {
             DogImageView(dogManager: dogManager)
@@ -32,6 +33,7 @@ struct EvolutionView: View {
                     }
                     .buttonStyle(.bordered)
                 }
+
             }
 
             // Show leaderboard button
@@ -74,4 +76,9 @@ class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true)
     }
+}
+
+// MARK: - Preview
+#Preview {
+    EvolutionView(dogManager: DogManager())
 }

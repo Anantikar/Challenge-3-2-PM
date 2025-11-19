@@ -5,30 +5,44 @@
 //  Created by Anantika Tiwari on 17/11/25.
 //
 
-import SwiftUI
+
 import WidgetKit
 enum Emotion: String {
     case happy, sad, standard, dead
 }
+
 class DogManager : ObservableObject{
-    @Published var emotion: Emotion
-    @Published var level: Int
+    @Published var emotion: Emotion{
+        didSet { save() }
+    }
+    @Published var level: Int{
+        didSet { save() }
+    }
     @Published var hearts: Int{
         didSet{
+            save()
             evolve()
             saveToSharedDefaults()
             GameCenterManager.shared.submitHeartsToLeaderboard(hearts)
         }
     }
-    @Published var name: String
-    
-    init(emotion: Emotion = .dead, level: Int = 1, hearts: Int = 0, name: String = "") {
-        self.emotion = emotion
-        self.level = level
-        self.hearts = hearts
-        self.name = name
-        
+    @Published var name: String{
+        didSet { save() }
     }
+    
+    init() {
+        self.emotion = Emotion(rawValue: UserDefaults.standard.string(forKey: "dog_emotion") ?? "standard") ?? .standard
+        self.level = UserDefaults.standard.integer(forKey: "dog_level")
+        self.hearts = UserDefaults.standard.integer(forKey: "dog_hearts")
+        self.name = UserDefaults.standard.string(forKey: "dog_name") ?? ""
+    }
+    
+    private func save() {
+            UserDefaults.standard.set(emotion.rawValue, forKey: "dog_emotion")
+            UserDefaults.standard.set(level, forKey: "dog_level")
+            UserDefaults.standard.set(hearts, forKey: "dog_hearts")
+            UserDefaults.standard.set(name, forKey: "dog_name")
+        }
     
     private let stages: [(minHearts: Int, emotion: Emotion, level: Int)] = [
         (0, .dead, 1),

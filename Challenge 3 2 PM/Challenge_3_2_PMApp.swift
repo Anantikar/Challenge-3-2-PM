@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct Challenge_3_2_PMApp: App {
     @Environment(\.openURL) var openURL
@@ -22,5 +23,6 @@ struct Challenge_3_2_PMApp: App {
                     print("opened from widget", url)
                 }
         }
+
     }
 }
