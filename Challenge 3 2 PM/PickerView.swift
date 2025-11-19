@@ -5,6 +5,17 @@
 //  Created by swiftinsg on 10/11/25.
 //
 import SwiftUI
+import UserNotifications
+
+private enum SleepKeys {
+    static let bedtime = "sleep_bedtime"
+    static let wakeup = "sleep_wakeup"
+}
+
+private enum NotificationKeys {
+    static let bedtimeReminderID = "sleep_bedtime_30min_reminder"
+}
+
 struct PickerView: View {
     @State private var bedtime = Date.now
     @State private var wakeup = Date.now
@@ -28,18 +39,107 @@ struct PickerView: View {
                     .padding()
                 DatePicker("", selection: $wakeup, displayedComponents: .hourAndMinute)
                     .padding()
-                
             }
+
             Button {
-                print("save")
+                saveTimes()
+                scheduleBedtimeReminder()
             } label: {
                 Text("Save")
+            }
+            .padding(.top)
+
+            // Sanity test button
+            Button("Test notification in 10s") {
+                let content = UNMutableNotificationContent()
+                content.title = "Test"
+                content.body = "This should appear in 10 seconds."
+                content.sound = .default
+
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                let request = UNNotificationRequest(identifier: "test_notification_10s",
+                                                    content: content,
+                                                    trigger: trigger)
+                UNUserNotificationCenter.current().add(request) { error in
+                    print(error?.localizedDescription ?? "Scheduled test notification")
+                }
+            }
+            .padding(.top)
+        }
+        .onAppear {
+            loadTimes()
+            // Ask for notifications permission
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if let error = error {
+                    print("Notification permission error: \(error.localizedDescription)")
+                } else {
+                    print("Notification permission granted? \(granted)")
+                }
+            }
+        }
+    }
+
+    private func saveTimes() {
+        let defaults = UserDefaults.standard
+        defaults.set(bedtime.timeIntervalSince1970, forKey: SleepKeys.bedtime)
+        defaults.set(wakeup.timeIntervalSince1970, forKey: SleepKeys.wakeup)
+    }
+
+    private func loadTimes() {
+        let defaults = UserDefaults.standard
+        if let savedBedtime = defaults.object(forKey: SleepKeys.bedtime) as? Double {
+            bedtime = Date(timeIntervalSince1970: savedBedtime)
+        }
+        if let savedWakeup = defaults.object(forKey: SleepKeys.wakeup) as? Double {
+            wakeup = Date(timeIntervalSince1970: savedWakeup)
+        }
+    }
+
+    // If you adopted the improved one-shot scheduling from earlier, keep that here.
+    private func scheduleBedtimeReminder() {
+        let calendar = Calendar.current
+        let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
+        guard let hour = bedtimeComponents.hour, let minute = bedtimeComponents.minute else { return }
+
+        var todayComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        todayComponents.hour = hour
+        todayComponents.minute = minute
+
+        let targetToday = calendar.date(from: todayComponents) ?? Date()
+        let reminderDate = calendar.date(byAdding: .minute, value: -30, to: targetToday) ?? targetToday
+
+        let nextReminderDate: Date
+        if reminderDate <= Date() {
+            nextReminderDate = calendar.date(byAdding: .day, value: 1, to: reminderDate) ?? reminderDate.addingTimeInterval(86400)
+        } else {
+            nextReminderDate = reminderDate
+        }
+
+        let triggerDateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: nextReminderDate)
+
+        let content = UNMutableNotificationContent()
+        content.title = "Bedtime soon"
+        content.body = "It's 30 minutes before \(dogManager.name.isEmpty ? "bedtime" : "\(dogManager.name)'s bedtime")."
+        content.sound = .default
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+
+        let request = UNNotificationRequest(identifier: NotificationKeys.bedtimeReminderID,
+                                            content: content,
+                                            trigger: trigger)
+
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [NotificationKeys.bedtimeReminderID])
+        center.add(request) { error in
+            if let error = error {
+                print("Failed to schedule bedtime reminder: \(error.localizedDescription)")
+            } else {
+                print("Scheduled bedtime reminder for \(nextReminderDate)")
             }
         }
     }
 }
+
 #Preview {
     PickerView(dogManager: DogManager())
 }
-
-
