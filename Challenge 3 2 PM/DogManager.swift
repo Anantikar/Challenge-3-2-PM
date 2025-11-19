@@ -31,19 +31,42 @@ class DogManager : ObservableObject{
     }
     
     init() {
-        self.emotion = Emotion(rawValue: UserDefaults.standard.string(forKey: "dog_emotion") ?? "standard") ?? .standard
-        self.level = UserDefaults.standard.integer(forKey: "dog_level")
-        self.hearts = UserDefaults.standard.integer(forKey: "dog_hearts")
-        self.name = UserDefaults.standard.string(forKey: "dog_name") ?? ""
+        // Detect first launch by checking presence of any persisted key
+        let hasLaunchedBefore =
+            UserDefaults.standard.object(forKey: "dog_hearts") != nil ||
+            UserDefaults.standard.object(forKey: "dog_level") != nil ||
+            UserDefaults.standard.object(forKey: "dog_emotion") != nil ||
+            UserDefaults.standard.object(forKey: "dog_name") != nil
+        
+        if hasLaunchedBefore {
+            self.emotion = Emotion(rawValue: UserDefaults.standard.string(forKey: "dog_emotion") ?? "standard") ?? .standard
+            self.level = UserDefaults.standard.integer(forKey: "dog_level")
+            self.hearts = UserDefaults.standard.integer(forKey: "dog_hearts")
+            self.name = UserDefaults.standard.string(forKey: "dog_name") ?? ""
+        } else {
+            // Choose your desired baseline. With current stages, 0 hearts -> dead level 1.
+            self.hearts = 0
+            self.emotion = .dead   // this will be overwritten by evolve() anyway
+            self.level = 1         // temporary; evolve() will ensure consistency
+            self.name = ""
+        }
+        
+        // Ensure state is consistent with hearts on launch
+        evolve()
+        
+        // Persist and share so UI/widget have valid values (avoids level 0 image name)
+        save()
+        saveToSharedDefaults()
     }
     
     private func save() {
-            UserDefaults.standard.set(emotion.rawValue, forKey: "dog_emotion")
-            UserDefaults.standard.set(level, forKey: "dog_level")
-            UserDefaults.standard.set(hearts, forKey: "dog_hearts")
-            UserDefaults.standard.set(name, forKey: "dog_name")
-        }
+        UserDefaults.standard.set(emotion.rawValue, forKey: "dog_emotion")
+        UserDefaults.standard.set(level, forKey: "dog_level")
+        UserDefaults.standard.set(hearts, forKey: "dog_hearts")
+        UserDefaults.standard.set(name, forKey: "dog_name")
+    }
     
+    // If you want 0 hearts to be standard level 1 instead of dead, change the first tuple to (0, .standard, 1)
     private let stages: [(minHearts: Int, emotion: Emotion, level: Int)] = [
         (0, .dead, 1),
         (50, .dead, 2),
@@ -78,6 +101,9 @@ class DogManager : ObservableObject{
                 return
             }
         }
+        // Fallback (shouldn't hit with current stages)
+        emotion = .dead
+        level = 1
     }
     
     func heartsToNextEvolution() -> Int {
@@ -99,4 +125,3 @@ class DogManager : ObservableObject{
         WidgetCenter.shared.reloadAllTimelines()
     }
 }
-
