@@ -16,14 +16,14 @@ struct DogStatsView: View {
             VStack{
                 DogImageView(dogManager: dogManager)
                 List {
-                    Text("**Level:** \(dogManager.level)")
-                    Text("**Emotion:** \(dogManager.emotion.rawValue.capitalized)")
-                    Text("**Total hearts:** \(dogManager.hearts)")
-                    Text("**Hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
+                    Text("**level:** \(dogManager.level)")
+                    Text("**emotion:** \(dogManager.emotion.rawValue)")
+                    Text("**total hearts:** \(dogManager.hearts)")
+                    Text("**hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
                 }
                 .listStyle(.plain)
             }
-            .navigationTitle("\(dogManager.name)'s Stats")
+            .navigationTitle("\(dogManager.name)'s stats")
         }
         .padding()
     }

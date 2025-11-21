@@ -31,7 +31,7 @@ struct PickerView: View {
             DogImageView(dogManager: dogManager)
 
             HStack {
-                Text("When does \(dogManager.name) wanna sleep")
+                Text("when does \(dogManager.name) wanna sleep")
                     .font(.headline)
                     .padding()
                 DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)

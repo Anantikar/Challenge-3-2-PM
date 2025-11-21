@@ -9,8 +9,7 @@ import SwiftUI
 import FamilyControls
 
 struct BlockerView: View {
-    @Environment(\.presentationMode) private var
-    presentationMode: Binding<PresentationMode>
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @ObservedObject var manager: ShieldManager
     @Binding var wakeUp: Date?
     @State private var showActivityPicker = false
@@ -25,14 +24,14 @@ struct BlockerView: View {
                     Button {
                         showActivityPicker = true
                     } label: {
-                        Label("Choose apps to block", systemImage: "gearshape")
+                        Label("configure apps", systemImage: "gearshape")
                     }
                     
                     HStack{
-                        Text("Block until:")
+                        Text("block until")
                             .font(.title3)
                         DatePicker(
-                            "Block Until:",
+                            "block until",
                             selection: Binding(
                                 get: { wakeUp ?? Date() },
                                 set: { wakeUp = $0 }
@@ -48,12 +47,12 @@ struct BlockerView: View {
                         
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Label("Confirm", systemImage: "checkmark.circle")
+                        Label("confirm", systemImage: "checkmark.circle")
                     }
                 }
                 .scrollContentBackground(.hidden)
                 .background(.clear)
-                .navigationTitle("Block Apps")
+                .navigationTitle("block apps")
                 .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
             }
         }
