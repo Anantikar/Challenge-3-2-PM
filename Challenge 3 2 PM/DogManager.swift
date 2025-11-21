@@ -88,10 +88,13 @@ class DogManager : ObservableObject{
     
     func evolve() {
         for stage in stages.reversed() {
-            if hearts >= stage.minHearts {
+            if hearts >= stage.minHearts && hearts >= 0 {
                 emotion = stage.emotion
                 level = stage.level
                 return
+            } else if hearts < 0 {
+                emotion = .dead
+                level = 1
             }
         }
         emotion = .sad
