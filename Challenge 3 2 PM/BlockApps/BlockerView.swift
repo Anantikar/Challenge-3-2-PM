@@ -51,6 +51,8 @@ struct BlockerView: View {
                         Label("Confirm", systemImage: "checkmark.circle")
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .background(.clear)
                 .navigationTitle("Block Apps")
                 .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
             }

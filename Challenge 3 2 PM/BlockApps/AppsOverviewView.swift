@@ -24,15 +24,15 @@ struct AppsOverviewView: View {
                         Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
                             .font(.largeTitle)
                             .foregroundStyle(.white)
-                            .padding(.top, -100)
                             .bold()
                     } else {
                         Text("No apps currently locked")
                             .font(.largeTitle)
                             .foregroundStyle(.white)
+                            .bold()
+                            .padding()
                     }
                     DogImageView(dogManager: dogManager)
-                        .padding(.top, -50)
                         .foregroundStyle(.white)
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
