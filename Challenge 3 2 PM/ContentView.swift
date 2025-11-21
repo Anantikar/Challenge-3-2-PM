@@ -35,17 +35,19 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image(.wallpaper)
+                Image("wallpaper")
                     .resizable()
                     .ignoresSafeArea()
                 VStack(spacing: 16) {
                     DogImageView(dogManager: dogManager)
                     if !isNameFinal {
                         Text("don't leave dawg nameless 🙁")
+                            .foregroundStyle(.white)
                         
                         TextField("E.g. dawg", text: $dogManager.name)
                             .textFieldStyle(.roundedBorder)
                             .padding(.horizontal)
+                            .foregroundStyle(.white)
                         
                         Button("Save name") {
                             isNameFinal = true
