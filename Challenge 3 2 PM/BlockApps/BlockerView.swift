@@ -17,20 +17,17 @@ struct BlockerView: View {
     
     var body: some View {
         NavigationStack{
-            VStack {
-                Text("Block Apps")
-                    .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
-                    .padding()
-                    .bold()
-                    .font(.largeTitle)
-                
+            Text("Block Apps")
+                .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
+                .padding()
+                .bold()
+                .font(.largeTitle)
+            Form {
                 Button {
                     showActivityPicker = true
                 } label: {
                     Label("Choose apps to block", systemImage: "gearshape")
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
                 
                 HStack{
                     Text("Block until:")
@@ -51,12 +48,12 @@ struct BlockerView: View {
                     manager.blockUntil = wakeUp
                     manager.isLocked = true
                     manager.shieldActivities(until: wakeUp)
+
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Label("Confirm", systemImage: "checkmark.circle")
                 }
                 
-                Spacer()
             }
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
