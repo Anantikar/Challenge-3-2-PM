@@ -44,12 +44,13 @@ struct AppsOverviewView: View {
                         Image(systemName: "exclamationmark.triangle")
                         Text("emergency stop")
                     }
+                    .tint(.red)
                     .disabled(!manager.isLocked)
                     .opacity(!manager.isLocked ? 0.7 : 1.0)
                     .padding(.top, 100)
                     Spacer()
                 }
-                .navigationTitle("block Apps")
+                .navigationTitle("block apps")
                 .foregroundStyle(.white)
                 .tint(.white)
                 .buttonStyle(.borderedProminent)
