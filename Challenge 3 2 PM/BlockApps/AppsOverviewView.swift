@@ -39,11 +39,15 @@ struct AppsOverviewView: View {
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
                     HStack{
-                        Button("Edit") {
+                        Button("edit") {
                             showAppConfigure = true
                         }
                         .sheet(isPresented: $showAppConfigure){
-                            BlockerView(manager: manager, wakeUp: $wakeUp)
+                            BlockerView(
+                                manager: manager,
+                                wakeUp: $wakeUp,
+                                showConfig: $showAppConfigure
+                            )
                         }
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
@@ -126,3 +130,4 @@ struct AppsOverviewView: View {
 #Preview {
     AppsOverviewView(manager: ShieldManager(), dogManager: DogManager())
 }
+
