@@ -47,7 +47,7 @@ struct AppsOverviewView: View {
                     .padding(.top, 100)
                     Spacer()
                 }
-                .navigationTitle("block Apps")
+                .navigationTitle("block apps")
                 .foregroundStyle(.white)
                 .tint(.white)
                 .buttonStyle(.borderedProminent)
