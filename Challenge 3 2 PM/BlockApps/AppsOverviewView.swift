@@ -14,32 +14,37 @@ struct AppsOverviewView: View {
     @ObservedObject var dogManager: DogManager
     @State private var showConfirmation: Bool = false
     var body: some View {
-        VStack {
-            if manager.isLocked, let unlockTime = manager.blockUntil {
-                Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
-                    .font(.largeTitle)
-            } else {
-                Text("No apps currently locked")
-                    .font(.largeTitle)
+        NavigationStack {
+            VStack {
+                DogImageView(dogManager: dogManager)
+                Text("stop scrolling ruff ruff 🐶")
+                if manager.isLocked, let unlockTime = manager.blockUntil {
+                    Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
+                        .font(.largeTitle)
+                } else {
+                    Text("No apps currently locked")
+                        .font(.largeTitle)
+                }
+                NavigationLink("Edit") {
+                    BlockerView(
+                        manager: manager,
+                        wakeUp: $manager.blockUntil
+                    )
+                }
+                .disabled(manager.isLocked)
+                .opacity(manager.isLocked ? 0.7 : 1.0)
+                
+                Button{
+                    showConfirmation.toggle()
+                }label:{
+                    Image(systemName: "exclamationmark.triangle")
+                    Text("Emergency stop")
+                }
+                .disabled(!manager.isLocked)
+                .opacity(!manager.isLocked ? 0.7 : 1.0)
+                
             }
-            NavigationLink("Edit") {
-                BlockerView(
-                    manager: manager,
-                    wakeUp: $manager.blockUntil
-                )
-            }
-            .disabled(manager.isLocked)
-            .opacity(manager.isLocked ? 0.7 : 1.0)
-                        
-            Button{
-                showConfirmation.toggle()
-            }label:{
-                Image(systemName: "exclamationmark.triangle")
-                Text("Emergency stop")
-            }
-            .disabled(!manager.isLocked)
-            .opacity(!manager.isLocked ? 0.7 : 1.0)
-
+            .navigationTitle("Block Apps")
         }
         .task{
             do{
@@ -67,7 +72,7 @@ struct AppsOverviewView: View {
             }label: {
                 Text("Emergency Stop")
             }
-        }message: {
+        } message: {
             Text("Are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
         }
     }

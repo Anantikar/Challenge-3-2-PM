@@ -67,8 +67,6 @@ struct PickerView: View {
             bedtime = Date(timeIntervalSince1970: savedBedtime)
         }
     }
-
-    // Schedules next occurrence only; if today's time has passed, schedules for tomorrow.
     private func scheduleBedtimeReminder() {
         let calendar = Calendar.current
         let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)

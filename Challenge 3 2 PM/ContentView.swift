@@ -44,7 +44,6 @@ struct ContentView: View {
                         .padding(.horizontal)
                     
                     Button("Save name") {
-                        // dogManager automatically saves the name
                         isNameFinal = true
                     }
                     .padding(.bottom)
@@ -110,8 +109,7 @@ struct ContentView: View {
                 }
             }
             
-            
-            // 👇 THIS LOADS THE SAVED DOG NAME ON APP START
+        
             .onAppear {
                 if !dogManager.name.isEmpty {
                     isNameFinal = true

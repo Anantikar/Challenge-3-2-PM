@@ -55,6 +55,7 @@ struct BlockerView: View {
                 }
                 
             }
+            .navigationTitle("Block Apps")
         }
         .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
     }

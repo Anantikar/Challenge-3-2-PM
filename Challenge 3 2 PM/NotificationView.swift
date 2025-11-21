@@ -20,10 +20,8 @@ func scheduleLocalNotification() {
     let content = UNMutableNotificationContent()
     content.title = "Reminder!"
     content.body = "Don't forget your task."
-    content.sound = UNNotificationSound.default // Optional: Play default sound
-    
-    // Define a trigger (e.g., time-based, calendar-based, or location-based)
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // Fire after 5 seconds, not repeating
+    content.sound = UNNotificationSound.default
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
     
     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
     
@@ -39,14 +37,12 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Handle notification presentation in the foreground
-        completionHandler([.banner, .sound]) // Show banner and play sound
+        completionHandler([.banner, .sound])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Handle user interaction with the notification
         print("User tapped notification with identifier: \(response.notification.request.identifier)")
         completionHandler()
     }
