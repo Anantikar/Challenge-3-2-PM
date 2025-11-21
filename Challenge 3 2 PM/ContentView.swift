@@ -46,29 +46,14 @@ struct ContentView: View {
                         }
                     }
                     .sheet(isPresented: $showingFirstTimeSheet) {
-                        FirstTimeSheetView(hasSeenFirstTimeSheet: $hasSeenFirstTimeSheet)
+                        FirstTimeSheetView(hasSeenFirstTimeSheet: $hasSeenFirstTimeSheet, dogManager: dogManager)
                     }
                 VStack(spacing: 16) {
                     DogImageView(dogManager: dogManager)
-                    if !isNameFinal {
-                        Text("don't leave dawg nameless 🙁")
-                            .foregroundStyle(.white)
-                        
-                        TextField("e.g. dawg", text: $dogManager.name)
-                            .textFieldStyle(.roundedBorder)
-                            .padding(.horizontal)
-                        
-                        Button("Save name") {
-                            isNameFinal = true
-                        }
-                        .padding(.bottom)
-                    }
-                    if isNameFinal {
-                        Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
-                            .font(.largeTitle)
-                            .foregroundStyle(.white)
-                            .bold()
-                    }
+                    Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
+                        .bold()
                     if dogManager.emotion == .dead{
                         Text("revive me!")
                             .font(.headline)

@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct FirstTimeSheetView: View {
+    @Binding var hasSeenFirstTimeSheet: Bool
+    @ObservedObject var dogManager: DogManager
+    @Environment(\.dismiss) var dismiss
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        DogImageView(dogManager: dogManager)
+            .foregroundStyle(.white)
+        Text("Pick a name for your dog!")
+        Form{
+            TextField("Name", text: $dogManager.name)
+            Button("Get Started") {
+                hasSeenFirstTimeSheet = true // Mark as seen
+                dismiss() // Dismiss the sheet
+            }
+        }
     }
 }
 
 #Preview {
-    FirstTimeSheetView()
+    FirstTimeSheetView(hasSeenFirstTimeSheet: .constant(false), dogManager: DogManager())
 }
