@@ -98,30 +98,6 @@ struct AppsOverviewView: View {
         } message: {
             Text("are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
         }
-        .onAppear {
-            // Inline title (small) text color to white
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.white
-            ]
-            // Do NOT change largeTitleTextAttributes, so large titles stay default
-
-            let navBar = UINavigationBar.appearance()
-            navBar.standardAppearance = appearance
-            navBar.compactAppearance = appearance
-            navBar.scrollEdgeAppearance = appearance
-        }
-        .onDisappear {
-            // Restore default to avoid affecting other screens
-            let restore = UINavigationBarAppearance()
-            restore.configureWithDefaultBackground()
-
-            let navBar = UINavigationBar.appearance()
-            navBar.standardAppearance = restore
-            navBar.compactAppearance = restore
-            navBar.scrollEdgeAppearance = restore
-        }
     }
 }
 
