@@ -16,10 +16,6 @@ struct BlockerView: View {
     
     var body: some View {
         NavigationStack{
-            ZStack {
-                Image("wallpaper")
-                    .resizable()
-                    .ignoresSafeArea()
                 Form {
                     Button {
                         showActivityPicker = true
@@ -54,7 +50,6 @@ struct BlockerView: View {
                 .background(.clear)
                 .navigationTitle("block apps")
                 .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
-            }
         }
     }
 }
