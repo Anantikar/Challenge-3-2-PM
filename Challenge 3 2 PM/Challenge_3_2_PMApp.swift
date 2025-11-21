@@ -29,6 +29,7 @@ struct Challenge_3_2_PMApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(manager: ShieldManager())
+                .preferredColorScheme(.dark)
                 .onOpenURL { url in
                     print("opened from widget", url)
                 }

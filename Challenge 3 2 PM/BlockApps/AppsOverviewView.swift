@@ -13,6 +13,8 @@ struct AppsOverviewView: View {
     let center = AuthorizationCenter.shared
     @ObservedObject var dogManager: DogManager
     @State private var showConfirmation: Bool = false
+    @State private var showAppConfigure: Bool = false
+    @State private var wakeUp: Date? = nil
     var body: some View {
         NavigationStack {
             ZStack {
@@ -42,6 +44,7 @@ struct AppsOverviewView: View {
                         Image(systemName: "exclamationmark.triangle")
                         Text("emergency stop")
                     }
+                    .tint(.red)
                     .disabled(!manager.isLocked)
                     .opacity(!manager.isLocked ? 0.7 : 1.0)
                     .padding(.top, 100)
@@ -53,16 +56,19 @@ struct AppsOverviewView: View {
                 .buttonStyle(.borderedProminent)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink("edit") {
+                        Button("edit") {
+                            showAppConfigure = true
+                        }
+                        .sheet(isPresented: $showAppConfigure){
                             BlockerView(
                                 manager: manager,
-                                wakeUp: $manager.blockUntil
+                                wakeUp: $wakeUp,
+                                showConfig: $showAppConfigure
                             )
                         }
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
                         .buttonStyle(.borderedProminent)
-                        .padding(50)
                     }
                 }
             }
@@ -104,3 +110,4 @@ struct AppsOverviewView: View {
 #Preview {
     AppsOverviewView(manager: ShieldManager(), dogManager: DogManager())
 }
+
