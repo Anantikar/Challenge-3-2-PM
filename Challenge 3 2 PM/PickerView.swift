@@ -46,9 +46,8 @@ struct PickerView: View {
                             schedulePreBedReminders()
                             presentationMode.wrappedValue.dismiss()
                         } label: {
-                            Text("Save")
+                            Image(systemName: "checkmark.circle")
                         }
-                        .buttonStyle(.borderedProminent)
                     }
                 }
                 
