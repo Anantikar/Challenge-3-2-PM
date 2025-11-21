@@ -23,7 +23,7 @@ struct DogStatsView: View {
                 }
                 .listStyle(.plain)
             }
-            .navigationTitle("Here is how \(dogManager.name) is doing")
+            .navigationTitle("\(dogManager.name)'s Stats")
         }
         .padding()
     }
