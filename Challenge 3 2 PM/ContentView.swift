@@ -55,10 +55,12 @@ struct ContentView: View {
                     if isNameFinal {
                         Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
                             .font(.largeTitle)
+                            .foregroundStyle(.white)
                     }
                     
                     Text("play with me!")
                         .font(.headline)
+                        .foregroundStyle(.white)
                     Button {
                         isPickerPresented = true
                     } label: {
