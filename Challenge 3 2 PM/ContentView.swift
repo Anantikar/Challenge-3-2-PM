@@ -34,85 +34,90 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                DogImageView(dogManager: dogManager)
-                if !isNameFinal {
-                    Text("don't leave dawg nameless 🙁")
+            ZStack {
+                Image(.wallpaper)
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack(spacing: 16) {
+                    DogImageView(dogManager: dogManager)
+                    if !isNameFinal {
+                        Text("don't leave dawg nameless 🙁")
+                        
+                        TextField("E.g. dawg", text: $dogManager.name)
+                            .textFieldStyle(.roundedBorder)
+                            .padding(.horizontal)
+                        
+                        Button("Save name") {
+                            isNameFinal = true
+                        }
+                        .padding(.bottom)
+                    }
+                    if isNameFinal {
+                        Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
+                            .font(.largeTitle)
+                    }
                     
-                    TextField("E.g. dawg", text: $dogManager.name)
-                        .textFieldStyle(.roundedBorder)
-                        .padding(.horizontal)
+                    Text("play with me!")
+                        .font(.headline)
+                    Button {
+                        isPickerPresented = true
+                    } label: {
+                        Text("sleepy time 😴")
+                            .foregroundStyle(.black)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color(hex: "#d0e4f7"))
+                            .cornerRadius(20)
+                    }
+                    .sheet(isPresented: $isPickerPresented) {
+                        PickerView(dogManager: dogManager)
+                    }
+                    NavigationLink {
+                        AppsOverviewView(manager: manager, dogManager: dogManager)
+                    } label: {
+                        Text("paws off apps 🚫")
+                            .foregroundStyle(.black)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color(hex: "#d0e4f7"))
+                            .cornerRadius(20)
+                    }
+                    Button {
+                        isEvolutionPresented = true
+                    } label: {
+                        Text("top dawgs 🏆")
+                            .foregroundStyle(.black)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color(hex: "#d0e4f7"))
+                            .cornerRadius(20)
+                    }
+                    .sheet(isPresented: $isEvolutionPresented) {
+                        EvolutionView(dogManager: dogManager)
+                    }
                     
-                    Button("Save name") {
+                }
+                .padding()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            isStatsPresented.toggle()
+                        } label: {
+                            Image(systemName: "pawprint.fill")
+                                .imageScale(.large)
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .sheet(isPresented: $isStatsPresented) {
+                            DogStatsView(dogManager: dogManager)
+                        }
+                    }
+                }
+                
+                
+                .onAppear {
+                    if !dogManager.name.isEmpty {
                         isNameFinal = true
                     }
-                    .padding(.bottom)
-                }
-                if isNameFinal {
-                    Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
-                        .font(.largeTitle)
-                }
-                
-                Text("play with me!")
-                    .font(.headline)
-                Button {
-                    isPickerPresented = true
-                } label: {
-                    Text("sleepy time 😴")
-                        .foregroundStyle(.black)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(hex: "#d0e4f7"))
-                        .cornerRadius(20)
-                }
-                .sheet(isPresented: $isPickerPresented) {
-                    PickerView(dogManager: dogManager)
-                }
-                NavigationLink {
-                    AppsOverviewView(manager: manager, dogManager: dogManager)
-                } label: {
-                    Text("paws off apps 🚫")
-                        .foregroundStyle(.black)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(hex: "#d0e4f7"))
-                        .cornerRadius(20)
-                }
-                Button {
-                    isEvolutionPresented = true
-                } label: {
-                    Text("top dawgs 🏆")
-                        .foregroundStyle(.black)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(hex: "#d0e4f7"))
-                        .cornerRadius(20)
-                }
-                .sheet(isPresented: $isEvolutionPresented) {
-                    EvolutionView(dogManager: dogManager)
-                }
-                
-            }
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isStatsPresented.toggle()
-                    } label: {
-                        Image(systemName: "pawprint.fill")
-                            .imageScale(.large)
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    .sheet(isPresented: $isStatsPresented) {
-                        DogStatsView(dogManager: dogManager)
-                    }
-                }
-            }
-            
-        
-            .onAppear {
-                if !dogManager.name.isEmpty {
-                    isNameFinal = true
                 }
             }
         }
