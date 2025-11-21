@@ -30,7 +30,7 @@ struct PickerView: View {
         NavigationStack {
             VStack {
                 DogImageView(dogManager: dogManager)
-                
+                Text("notifications sent based on your chosen bedtime")
                 HStack {
                     Text("when does \(dogManager.name) wanna sleep")
                         .font(.headline)
