@@ -40,20 +40,20 @@ struct AppsOverviewView: View {
                         showConfirmation.toggle()
                     }label:{
                         Image(systemName: "exclamationmark.triangle")
-                        Text("Emergency stop")
+                        Text("emergency stop")
                     }
                     .disabled(!manager.isLocked)
                     .opacity(!manager.isLocked ? 0.7 : 1.0)
                     .padding(.top, 100)
                     Spacer()
                 }
-                .navigationTitle("Block Apps")
+                .navigationTitle("block Apps")
                 .foregroundStyle(.white)
                 .tint(.white)
                 .buttonStyle(.borderedProminent)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink("Edit") {
+                        NavigationLink("edit") {
                             BlockerView(
                                 manager: manager,
                                 wakeUp: $manager.blockUntil
