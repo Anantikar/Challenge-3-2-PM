@@ -22,28 +22,28 @@ struct EvolutionView: View {
                     .font(.caption)
                 Group {
                     if gcManager.isAuthenticated {
-                        Text("Signed in as \(GKLocalPlayer.local.displayName)")
+                        Text("signed in as \(GKLocalPlayer.local.displayName)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     } else {
-                        Text("Not signed in to Game Center")
+                        Text("not signed in to game center")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                         
-                        Button("Sign in to Game Center") {
+                        Button("sign in to game center") {
                             GameCenterManager.shared.authenticate()
                         }
                         .buttonStyle(.bordered)
                     }
                     
                 }
-                Button("Show Leaderboard") {
+                Button("show leaderboard") {
                     isShowingLeaderboard = true
                 }
                 .buttonStyle(.bordered)
                 .disabled(!gcManager.isAuthenticated)
             }
-            .navigationTitle("Leaderboard")
+            .navigationTitle("leaderboard")
         }
         .onAppear {
             if !gcManager.isAuthenticated {
