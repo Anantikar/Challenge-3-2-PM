@@ -21,6 +21,7 @@ struct FirstTimeSheetView: View {
                 hasSeenFirstTimeSheet = true // Mark as seen
                 dismiss() // Dismiss the sheet
             }
+            .disabled(dogManager.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
     }
 }
