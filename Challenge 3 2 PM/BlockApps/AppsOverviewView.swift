@@ -16,7 +16,7 @@ struct AppsOverviewView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image(.wallpaper)
+                Image("wallpaper")
                     .resizable()
                     .ignoresSafeArea()
                 VStack {
@@ -86,3 +86,4 @@ struct AppsOverviewView: View {
 #Preview {
     AppsOverviewView(manager: ShieldManager(), dogManager: DogManager())
 }
+
