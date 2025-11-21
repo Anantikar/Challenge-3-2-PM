@@ -44,7 +44,7 @@ struct ContentView: View {
                         Text("don't leave dawg nameless 🙁")
                             .foregroundStyle(.white)
                         
-                        TextField("E.g. dawg", text: $dogManager.name)
+                        TextField("e.g. dawg", text: $dogManager.name)
                             .textFieldStyle(.roundedBorder)
                             .padding(.horizontal)
                         
@@ -57,6 +57,7 @@ struct ContentView: View {
                         Text("\(dogManager.name) is \(dogManager.emotion.rawValue)")
                             .font(.largeTitle)
                             .foregroundStyle(.white)
+                            .bold()
                     }
                     if dogManager.emotion == .dead{
                         Text("revive me!")

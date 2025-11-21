@@ -28,7 +28,7 @@ struct AppsOverviewView: View {
                             .foregroundStyle(.white)
                             .bold()
                     } else {
-                        Text("No apps currently locked")
+                        Text("no apps currently locked")
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                             .bold()
@@ -48,12 +48,12 @@ struct AppsOverviewView: View {
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
                         .buttonStyle(.borderedProminent)
-                        
+
                         Button(role:.destructive){
                             showConfirmation.toggle()
                         }label:{
                             Image(systemName: "exclamationmark.triangle")
-                            Text("Emergency stop")
+                            Text("emergency stop")
                         }
                         .disabled(!manager.isLocked)
                         .opacity(!manager.isLocked ? 0.7 : 1.0)
@@ -61,7 +61,8 @@ struct AppsOverviewView: View {
                     .padding(.top, 100)
                     Spacer()
                 }
-                .navigationTitle("Block Apps")
+                .navigationTitle("block apps")
+                .navigationBarTitleDisplayMode(.inline)
                 .foregroundStyle(.white)
                 .buttonStyle(.borderedProminent)
             }
@@ -73,7 +74,7 @@ struct AppsOverviewView: View {
                 print("Failed to get authorization: \(error)")
             }
         }
-        .confirmationDialog("100 Hearts gained", isPresented: $manager.awardConfirmationShown, titleVisibility: .hidden){
+        .confirmationDialog("100 hearts gained", isPresented: $manager.awardConfirmationShown, titleVisibility: .hidden){
             Button{
                 manager.awardConfirmationShown.toggle()
                 dogManager.hearts += 100
@@ -81,19 +82,43 @@ struct AppsOverviewView: View {
                 Text("OK")
             }
         }message: {
-            Text("Congratulations! \(dogManager.name) has gained 100 hearts!")
+            Text("congratulations! \(dogManager.name) has gained 100 hearts!")
         }
-        .confirmationDialog("Emergency stop", isPresented: $showConfirmation, titleVisibility: .hidden){
+        .confirmationDialog("emergency stop", isPresented: $showConfirmation, titleVisibility: .hidden){
             Button(role: .destructive){
                 manager.unshieldActivities()
                 showConfirmation.toggle()
                 dogManager.hearts -= 50
                 manager.wasEmergencyused = true
             }label: {
-                Text("Emergency Stop")
+                Text("emergency stop")
             }
         } message: {
-            Text("Are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
+            Text("are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
+        }
+        .onAppear {
+            // Inline title (small) text color to white
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.titleTextAttributes = [
+                .foregroundColor: UIColor.white
+            ]
+            // Do NOT change largeTitleTextAttributes, so large titles stay default
+
+            let navBar = UINavigationBar.appearance()
+            navBar.standardAppearance = appearance
+            navBar.compactAppearance = appearance
+            navBar.scrollEdgeAppearance = appearance
+        }
+        .onDisappear {
+            // Restore default to avoid affecting other screens
+            let restore = UINavigationBarAppearance()
+            restore.configureWithDefaultBackground()
+
+            let navBar = UINavigationBar.appearance()
+            navBar.standardAppearance = restore
+            navBar.compactAppearance = restore
+            navBar.scrollEdgeAppearance = restore
         }
     }
 }
@@ -101,4 +126,3 @@ struct AppsOverviewView: View {
 #Preview {
     AppsOverviewView(manager: ShieldManager(), dogManager: DogManager())
 }
-
