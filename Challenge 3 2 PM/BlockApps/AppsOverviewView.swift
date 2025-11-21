@@ -13,7 +13,6 @@ struct AppsOverviewView: View {
     let center = AuthorizationCenter.shared
     @ObservedObject var dogManager: DogManager
     @State private var showConfirmation: Bool = false
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -37,8 +36,24 @@ struct AppsOverviewView: View {
                         .foregroundStyle(.white)
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
-                    HStack{
-                        NavigationLink("edit") {
+                    Button(role:.destructive){
+                        showConfirmation.toggle()
+                    }label:{
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Emergency stop")
+                    }
+                    .disabled(!manager.isLocked)
+                    .opacity(!manager.isLocked ? 0.7 : 1.0)
+                    .padding(.top, 100)
+                    Spacer()
+                }
+                .navigationTitle("Block Apps")
+                .foregroundStyle(.white)
+                .tint(.white)
+                .buttonStyle(.borderedProminent)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink("Edit") {
                             BlockerView(
                                 manager: manager,
                                 wakeUp: $manager.blockUntil
@@ -47,23 +62,11 @@ struct AppsOverviewView: View {
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
                         .buttonStyle(.borderedProminent)
-
-                        Button(role:.destructive){
-                            showConfirmation.toggle()
-                        }label:{
-                            Image(systemName: "exclamationmark.triangle")
-                            Text("emergency stop")
-                        }
-                        .disabled(!manager.isLocked)
-                        .opacity(!manager.isLocked ? 0.7 : 1.0)
+                        .padding(50)
                     }
-                    .padding(.top, 100)
-                    Spacer()
                 }
-                .navigationTitle("block apps")
-                .navigationBarTitleDisplayMode(.inline)
-                .foregroundStyle(.white)
-                .buttonStyle(.borderedProminent)
+            }
+            .overlay(alignment: .topTrailing) {
             }
         }
         .task{
