@@ -38,7 +38,7 @@ struct AppsOverviewView: View {
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
                     HStack{
-                        NavigationLink("Edit") {
+                        NavigationLink("edit") {
                             BlockerView(
                                 manager: manager,
                                 wakeUp: $manager.blockUntil
