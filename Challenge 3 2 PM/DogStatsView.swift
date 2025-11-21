@@ -12,18 +12,18 @@ struct DogStatsView: View {
     @ObservedObject var dogManager:DogManager
     
     var body: some View {
-        VStack{
-            Text("Here is how \(dogManager.name) is doing")
-                .bold()
-                .font(.largeTitle)
-            DogImageView(dogManager: dogManager)
-            List {
-                Text("**Level:** \(dogManager.level)")
-                Text("**Emotion:** \(dogManager.emotion.rawValue.capitalized)")
-                Text("**Total hearts:** \(dogManager.hearts)")
-                Text("**Hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
+        NavigationStack{
+            VStack{
+                DogImageView(dogManager: dogManager)
+                List {
+                    Text("**Level:** \(dogManager.level)")
+                    Text("**Emotion:** \(dogManager.emotion.rawValue.capitalized)")
+                    Text("**Total hearts:** \(dogManager.hearts)")
+                    Text("**Hearts till evolution:** \(dogManager.heartsToNextEvolution())❤️")
+                }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
+            .navigationTitle("Here is how \(dogManager.name) is doing")
         }
         .padding()
     }

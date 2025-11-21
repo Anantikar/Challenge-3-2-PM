@@ -22,12 +22,15 @@ struct AppsOverviewView: View {
                 VStack {
                     DogImageView(dogManager: dogManager)
                     Text("stop scrolling ruff ruff 🐶")
+                        .foregroundStyle(.white)
                     if manager.isLocked, let unlockTime = manager.blockUntil {
                         Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
                             .font(.largeTitle)
+                            .foregroundStyle(.white)
                     } else {
                         Text("No apps currently locked")
                             .font(.largeTitle)
+                            .foregroundStyle(.white)
                     }
                     NavigationLink("Edit") {
                         BlockerView(
@@ -49,6 +52,7 @@ struct AppsOverviewView: View {
                     
                 }
                 .navigationTitle("Block Apps")
+                .foregroundStyle(.white)
             }
         }
         .task{
