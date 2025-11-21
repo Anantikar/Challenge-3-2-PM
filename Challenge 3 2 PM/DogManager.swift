@@ -43,8 +43,8 @@ class DogManager : ObservableObject{
             self.hearts = UserDefaults.standard.integer(forKey: "dog_hearts")
             self.name = UserDefaults.standard.string(forKey: "dog_name") ?? ""
         } else {
-            self.hearts = 0
-            self.emotion = .dead
+            self.hearts = 450
+            self.emotion = .sad
             self.level = 1
             self.name = ""
         }
@@ -94,7 +94,7 @@ class DogManager : ObservableObject{
                 return
             }
         }
-        emotion = .dead
+        emotion = .sad
         level = 1
     }
     

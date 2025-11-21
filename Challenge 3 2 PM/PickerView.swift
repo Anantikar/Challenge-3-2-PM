@@ -19,6 +19,8 @@ private enum NotificationKeys {
 }
 
 struct PickerView: View {
+    @Environment(\.presentationMode) private var
+    presentationMode: Binding<PresentationMode>
     @State private var bedtime = Date.now
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
@@ -39,6 +41,7 @@ struct PickerView: View {
                 saveTimes()
                 scheduleBedtimeReminder()
                 schedulePreBedReminders()
+                presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }
