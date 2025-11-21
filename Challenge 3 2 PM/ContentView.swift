@@ -29,7 +29,8 @@ struct ContentView: View {
     @State private var isEvolutionPresented = false
     @State private var isStatsPresented = false
     @State private var showingSheet = false
-    
+    @AppStorage("hasSeenFirstTimeSheet") var hasSeenFirstTimeSheet: Bool = false
+    @State private var showingFirstTimeSheet: Bool = false
     @State private var isNameFinal = false
     @StateObject var dogManager = DogManager()
     
@@ -39,6 +40,14 @@ struct ContentView: View {
                 Image("wallpaper")
                     .resizable()
                     .ignoresSafeArea()
+                    .onAppear {
+                        if !hasSeenFirstTimeSheet {
+                            showingFirstTimeSheet = true
+                        }
+                    }
+                    .sheet(isPresented: $showingFirstTimeSheet) {
+                        FirstTimeSheetView(hasSeenFirstTimeSheet: $hasSeenFirstTimeSheet)
+                    }
                 VStack(spacing: 16) {
                     DogImageView(dogManager: dogManager)
                     if !isNameFinal {
