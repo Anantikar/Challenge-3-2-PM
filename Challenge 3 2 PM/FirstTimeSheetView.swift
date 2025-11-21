@@ -14,10 +14,10 @@ struct FirstTimeSheetView: View {
     var body: some View {
         DogImageView(dogManager: dogManager)
             .foregroundStyle(.white)
-        Text("Pick a name for your dog!")
+        Text("pick a name for your dog!")
         Form{
-            TextField("Name", text: $dogManager.name)
-            Button("Get Started") {
+            TextField("name", text: $dogManager.name)
+            Button("get started") {
                 hasSeenFirstTimeSheet = true // Mark as seen
                 dismiss() // Dismiss the sheet
             }
