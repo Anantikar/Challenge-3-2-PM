@@ -30,9 +30,27 @@ struct BlockerView: View {
                         "block until",
                         selection: Binding(
                             get: { wakeUp ?? Date() },
-                            set: { wakeUp = $0 }
+                            set: { newValue in
+                                let now = Date()
+                                let calendar = Calendar.current
+                                
+                                // Build today's date at the selected hour/minute
+                                var components = calendar.dateComponents([.year, .month, .day], from: now)
+                                components.hour = calendar.component(.hour, from: newValue)
+                                components.minute = calendar.component(.minute, from: newValue)
+                                let todayTime = calendar.date(from: components)!
+
+                                // Only accept future times
+                                if todayTime >= now {
+                                    wakeUp = newValue
+                                } else {
+                                    // Reject invalid selection (optional: show alert)
+                                    print("Cannot choose a past time")
+                                }
+                            }
                         ),
                         displayedComponents: .hourAndMinute
+                        
                     )
                     .labelsHidden()
                 }
