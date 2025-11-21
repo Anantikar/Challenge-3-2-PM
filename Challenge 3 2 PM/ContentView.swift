@@ -58,10 +58,15 @@ struct ContentView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                     }
-                    
-                    Text("play with me!")
-                        .font(.headline)
-                        .foregroundStyle(.white)
+                    if dogManager.emotion == .dead{
+                        Text("revive me!")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                    } else {
+                        Text("play with me!")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                    }
                     Button {
                         isPickerPresented = true
                     } label: {

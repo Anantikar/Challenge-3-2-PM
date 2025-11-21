@@ -9,8 +9,7 @@ import SwiftUI
 import FamilyControls
 
 struct BlockerView: View {
-    @Environment(\.presentationMode) private var
-    presentationMode: Binding<PresentationMode>
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @ObservedObject var manager: ShieldManager
     @Binding var wakeUp: Date?
     @State private var showActivityPicker = false
@@ -32,7 +31,7 @@ struct BlockerView: View {
                         Text("Block until:")
                             .font(.title3)
                         DatePicker(
-                            "Block Until:",
+                            "Block Until",
                             selection: Binding(
                                 get: { wakeUp ?? Date() },
                                 set: { wakeUp = $0 }

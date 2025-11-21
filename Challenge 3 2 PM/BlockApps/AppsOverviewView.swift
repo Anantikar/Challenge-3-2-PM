@@ -13,6 +13,8 @@ struct AppsOverviewView: View {
     let center = AuthorizationCenter.shared
     @ObservedObject var dogManager: DogManager
     @State private var showConfirmation: Bool = false
+    @State private var showAppConfigure: Bool = false
+    @State private var wakeUp: Date? = nil
     var body: some View {
         NavigationStack {
             ZStack {
@@ -37,11 +39,11 @@ struct AppsOverviewView: View {
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
                     HStack{
-                        NavigationLink("Edit") {
-                            BlockerView(
-                                manager: manager,
-                                wakeUp: $manager.blockUntil
-                            )
+                        Button("Edit") {
+                            showAppConfigure = true
+                        }
+                        .sheet(isPresented: $showAppConfigure){
+                            BlockerView(manager: manager, wakeUp: $wakeUp)
                         }
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
