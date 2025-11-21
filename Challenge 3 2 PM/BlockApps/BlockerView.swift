@@ -17,11 +17,6 @@ struct BlockerView: View {
     
     var body: some View {
         NavigationStack{
-            Text("Block Apps")
-                .frame(maxWidth: 500, maxHeight: 50, alignment: .topLeading)
-                .padding()
-                .bold()
-                .font(.largeTitle)
             Form {
                 Button {
                     showActivityPicker = true

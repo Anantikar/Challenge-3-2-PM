@@ -15,36 +15,41 @@ struct AppsOverviewView: View {
     @State private var showConfirmation: Bool = false
     var body: some View {
         NavigationStack {
-            VStack {
-                DogImageView(dogManager: dogManager)
-                Text("stop scrolling ruff ruff 🐶")
-                if manager.isLocked, let unlockTime = manager.blockUntil {
-                    Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
-                        .font(.largeTitle)
-                } else {
-                    Text("No apps currently locked")
-                        .font(.largeTitle)
+            ZStack {
+                Image(.wallpaper)
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack {
+                    DogImageView(dogManager: dogManager)
+                    Text("stop scrolling ruff ruff 🐶")
+                    if manager.isLocked, let unlockTime = manager.blockUntil {
+                        Text("\(dogManager.name) has locked your apps until \(unlockTime.formatted(date: .omitted, time: .shortened))")
+                            .font(.largeTitle)
+                    } else {
+                        Text("No apps currently locked")
+                            .font(.largeTitle)
+                    }
+                    NavigationLink("Edit") {
+                        BlockerView(
+                            manager: manager,
+                            wakeUp: $manager.blockUntil
+                        )
+                    }
+                    .disabled(manager.isLocked)
+                    .opacity(manager.isLocked ? 0.7 : 1.0)
+                    
+                    Button{
+                        showConfirmation.toggle()
+                    }label:{
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Emergency stop")
+                    }
+                    .disabled(!manager.isLocked)
+                    .opacity(!manager.isLocked ? 0.7 : 1.0)
+                    
                 }
-                NavigationLink("Edit") {
-                    BlockerView(
-                        manager: manager,
-                        wakeUp: $manager.blockUntil
-                    )
-                }
-                .disabled(manager.isLocked)
-                .opacity(manager.isLocked ? 0.7 : 1.0)
-                
-                Button{
-                    showConfirmation.toggle()
-                }label:{
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("Emergency stop")
-                }
-                .disabled(!manager.isLocked)
-                .opacity(!manager.isLocked ? 0.7 : 1.0)
-                
+                .navigationTitle("Block Apps")
             }
-            .navigationTitle("Block Apps")
         }
         .task{
             do{
