@@ -28,6 +28,7 @@ struct ContentView: View {
     @State private var isPickerPresented = false
     @State private var isEvolutionPresented = false
     @State private var isStatsPresented = false
+    @State private var showingSheet = false
     
     @State private var isNameFinal = false
     @StateObject var dogManager = DogManager()
@@ -127,6 +128,9 @@ struct ContentView: View {
                     if !dogManager.name.isEmpty {
                         isNameFinal = true
                     }
+                    if !UserDefaults.standard.bool(forKey: "hasShownOnboarding") {
+                        showingSheet = true
+                    }
                 }
             }
         }
@@ -136,4 +140,3 @@ struct ContentView: View {
 #Preview {
     ContentView(manager: ShieldManager())
 }
-

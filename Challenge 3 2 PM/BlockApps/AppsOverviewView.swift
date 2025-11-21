@@ -38,11 +38,24 @@ struct AppsOverviewView: View {
                         .foregroundStyle(.white)
                     Text("stop scrolling ruff ruff 🐶")
                         .padding(.top, -30)
-                    HStack{
-                        Button("edit") {
-                            showAppConfigure = true
-                        }
-                        .sheet(isPresented: $showAppConfigure){
+                    Button(role:.destructive){
+                        showConfirmation.toggle()
+                    }label:{
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("emergency stop")
+                    }
+                    .disabled(!manager.isLocked)
+                    .opacity(!manager.isLocked ? 0.7 : 1.0)
+                    .padding(.top, 100)
+                    Spacer()
+                }
+                .navigationTitle("block Apps")
+                .foregroundStyle(.white)
+                .tint(.white)
+                .buttonStyle(.borderedProminent)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink("edit") {
                             BlockerView(
                                 manager: manager,
                                 wakeUp: $wakeUp,
@@ -52,23 +65,11 @@ struct AppsOverviewView: View {
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
                         .buttonStyle(.borderedProminent)
-
-                        Button(role:.destructive){
-                            showConfirmation.toggle()
-                        }label:{
-                            Image(systemName: "exclamationmark.triangle")
-                            Text("emergency stop")
-                        }
-                        .disabled(!manager.isLocked)
-                        .opacity(!manager.isLocked ? 0.7 : 1.0)
+                        .padding(50)
                     }
-                    .padding(.top, 100)
-                    Spacer()
                 }
-                .navigationTitle("block apps")
-                .navigationBarTitleDisplayMode(.inline)
-                .foregroundStyle(.white)
-                .buttonStyle(.borderedProminent)
+            }
+            .overlay(alignment: .topTrailing) {
             }
         }
         .task{
@@ -99,30 +100,6 @@ struct AppsOverviewView: View {
             }
         } message: {
             Text("are you sure you want to stop? \(dogManager.name) will lose 50 hearts.")
-        }
-        .onAppear {
-            // Inline title (small) text color to white
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.white
-            ]
-            // Do NOT change largeTitleTextAttributes, so large titles stay default
-
-            let navBar = UINavigationBar.appearance()
-            navBar.standardAppearance = appearance
-            navBar.compactAppearance = appearance
-            navBar.scrollEdgeAppearance = appearance
-        }
-        .onDisappear {
-            // Restore default to avoid affecting other screens
-            let restore = UINavigationBarAppearance()
-            restore.configureWithDefaultBackground()
-
-            let navBar = UINavigationBar.appearance()
-            navBar.standardAppearance = restore
-            navBar.compactAppearance = restore
-            navBar.scrollEdgeAppearance = restore
         }
     }
 }
