@@ -55,7 +55,10 @@ struct AppsOverviewView: View {
                 .buttonStyle(.borderedProminent)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink("edit") {
+                        Button("edit") {
+                            showAppConfigure = true
+                        }
+                        .sheet(isPresented: $showAppConfigure){
                             BlockerView(
                                 manager: manager,
                                 wakeUp: $wakeUp,
@@ -65,7 +68,6 @@ struct AppsOverviewView: View {
                         .disabled(manager.isLocked)
                         .opacity(manager.isLocked ? 0.7 : 1.0)
                         .buttonStyle(.borderedProminent)
-                        .padding(50)
                     }
                 }
             }
