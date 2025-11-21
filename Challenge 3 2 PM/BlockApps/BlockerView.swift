@@ -18,7 +18,7 @@ struct BlockerView: View {
     var body: some View {
         NavigationStack{
             ZStack {
-                Image(.wallpaper)
+                Image("wallpaper")
                     .resizable()
                     .ignoresSafeArea()
                 Form {
@@ -41,16 +41,15 @@ struct BlockerView: View {
                         )
                         .labelsHidden()
                     }
-                }
-                
-                Button(action: {
-                    manager.blockUntil = wakeUp
-                    manager.isLocked = true
-                    manager.shieldActivities(until: wakeUp)
-                    
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Label("Confirm", systemImage: "checkmark.circle")
+                    Button(action: {
+                        manager.blockUntil = wakeUp
+                        manager.isLocked = true
+                        manager.shieldActivities(until: wakeUp)
+                        
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Label("Confirm", systemImage: "checkmark.circle")
+                    }
                 }
                 .navigationTitle("Block Apps")
                 .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
