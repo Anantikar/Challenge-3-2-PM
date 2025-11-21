@@ -17,42 +17,45 @@ struct BlockerView: View {
     
     var body: some View {
         NavigationStack{
-            Form {
-                Button {
-                    showActivityPicker = true
-                } label: {
-                    Label("Choose apps to block", systemImage: "gearshape")
+            ZStack {
+                Image(.wallpaper)
+                    .resizable()
+                    .ignoresSafeArea()
+                Form {
+                    Button {
+                        showActivityPicker = true
+                    } label: {
+                        Label("Choose apps to block", systemImage: "gearshape")
+                    }
+                    
+                    HStack{
+                        Text("Block until:")
+                            .font(.title3)
+                        DatePicker(
+                            "Block Until:",
+                            selection: Binding(
+                                get: { wakeUp ?? Date() },
+                                set: { wakeUp = $0 }
+                            ),
+                            displayedComponents: .hourAndMinute
+                        )
+                        .labelsHidden()
+                    }
                 }
-                
-                HStack{
-                    Text("Block until:")
-                        .font(.title3)
-                    DatePicker(
-                        "Block Until:",
-                        selection: Binding(
-                            get: { wakeUp ?? Date() },
-                            set: { wakeUp = $0 }
-                        ),
-                        displayedComponents: .hourAndMinute
-                    )
-                    .labelsHidden()
-                }
-                
                 
                 Button(action: {
                     manager.blockUntil = wakeUp
                     manager.isLocked = true
                     manager.shieldActivities(until: wakeUp)
-
+                    
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Label("Confirm", systemImage: "checkmark.circle")
                 }
-                
+                .navigationTitle("Block Apps")
+                .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
             }
-            .navigationTitle("Block Apps")
         }
-        .familyActivityPicker(isPresented: $showActivityPicker, selection: $manager.discouragedSelections)
     }
 }
 
