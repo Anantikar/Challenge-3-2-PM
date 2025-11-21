@@ -25,27 +25,35 @@ struct PickerView: View {
     @State private var wakeup = Date.now
     @State private var inputText: String = ""
     @ObservedObject var dogManager: DogManager
-
+    
     var body: some View {
-        VStack {
-            DogImageView(dogManager: dogManager)
-
-            HStack {
-                Text("when does \(dogManager.name) wanna sleep")
-                    .font(.headline)
-                    .padding()
-                DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
-                    .padding()
+        NavigationStack {
+            VStack {
+                DogImageView(dogManager: dogManager)
+                
+                HStack {
+                    Text("When does \(dogManager.name) wanna sleep")
+                        .font(.headline)
+                        .padding()
+                    DatePicker("", selection: $bedtime, displayedComponents: .hourAndMinute)
+                        .padding()
+                }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            saveTimes()
+                            scheduleBedtimeReminder()
+                            schedulePreBedReminders()
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Text("Save")
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                }
+                
+                .padding(.top)
             }
-            Button {
-                saveTimes()
-                scheduleBedtimeReminder()
-                schedulePreBedReminders()
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text("Save")
-            }
-            .padding(.top)
         }
         .onAppear {
             loadTimes()
@@ -58,12 +66,12 @@ struct PickerView: View {
             }
         }
     }
-
+    
     private func saveTimes() {
         let defaults = UserDefaults.standard
         defaults.set(bedtime.timeIntervalSince1970, forKey: SleepKeys.bedtime)
     }
-
+    
     private func loadTimes() {
         let defaults = UserDefaults.standard
         if let savedBedtime = defaults.object(forKey: SleepKeys.bedtime) as? Double {
@@ -74,34 +82,34 @@ struct PickerView: View {
         let calendar = Calendar.current
         let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
         guard let hour = bedtimeComponents.hour, let minute = bedtimeComponents.minute else { return }
-
+        
         var todayComponents = calendar.dateComponents([.year, .month, .day], from: Date())
         todayComponents.hour = hour
         todayComponents.minute = minute
-
+        
         let targetToday = calendar.date(from: todayComponents) ?? Date()
         let reminderDate = calendar.date(byAdding: .minute, value: -30, to: targetToday) ?? targetToday
-
+        
         let nextReminderDate: Date
         if reminderDate <= Date() {
             nextReminderDate = calendar.date(byAdding: .day, value: 1, to: reminderDate) ?? reminderDate.addingTimeInterval(86400)
         } else {
             nextReminderDate = reminderDate
         }
-
+        
         let triggerDateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: nextReminderDate)
-
+        
         let content = UNMutableNotificationContent()
         content.title = "Bedtime soon"
         content.body = "It's 30 minutes before \(dogManager.name.isEmpty ? "bedtime" : "\(dogManager.name)'s bedtime")."
         content.sound = .default
-
+        
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
-
+        
         let request = UNNotificationRequest(identifier: NotificationKeys.bedtimeReminder30MinID,
                                             content: content,
                                             trigger: trigger)
-
+        
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [NotificationKeys.bedtimeReminder30MinID])
         center.add(request) { error in
@@ -112,19 +120,19 @@ struct PickerView: View {
             }
         }
     }
-
+    
     // Schedules two additional reminders relative to bedtime: -2h and -1h. If the time has passed today, schedules for tomorrow.
     private func schedulePreBedReminders() {
         let calendar = Calendar.current
         let bedtimeComponents = calendar.dateComponents([.hour, .minute], from: bedtime)
         guard let hour = bedtimeComponents.hour, let minute = bedtimeComponents.minute else { return }
-
+        
         var todayComponents = calendar.dateComponents([.year, .month, .day], from: Date())
         todayComponents.hour = hour
         todayComponents.minute = minute
-
+        
         let targetToday = calendar.date(from: todayComponents) ?? Date()
-
+        
         // Define the reminders we want to schedule
         struct ReminderSpec {
             let offsetMinutes: Int
@@ -132,9 +140,9 @@ struct PickerView: View {
             let title: String
             let body: String
         }
-
+        
         let dogNamePortion = dogManager.name.isEmpty ? "bedtime" : "\(dogManager.name)'s bedtime"
-
+        
         let reminders: [ReminderSpec] = [
             ReminderSpec(offsetMinutes: -120,
                          id: NotificationKeys.bedtimeNoMeal2HrID,
@@ -145,9 +153,9 @@ struct PickerView: View {
                          title: "1 hour before bed",
                          body: "Avoid screens before \(dogNamePortion).")
         ]
-
+        
         let center = UNUserNotificationCenter.current()
-
+        
         for spec in reminders {
             let candidateDate = calendar.date(byAdding: .minute, value: spec.offsetMinutes, to: targetToday) ?? targetToday
             let nextDate: Date
@@ -156,17 +164,17 @@ struct PickerView: View {
             } else {
                 nextDate = candidateDate
             }
-
+            
             let triggerDateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: nextDate)
-
+            
             let content = UNMutableNotificationContent()
             content.title = spec.title
             content.body = spec.body
             content.sound = .default
-
+            
             let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
             let request = UNNotificationRequest(identifier: spec.id, content: content, trigger: trigger)
-
+            
             center.removePendingNotificationRequests(withIdentifiers: [spec.id])
             center.add(request) { error in
                 if let error = error {
