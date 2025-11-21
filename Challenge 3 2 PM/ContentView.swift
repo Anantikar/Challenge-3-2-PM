@@ -47,7 +47,6 @@ struct ContentView: View {
                         TextField("E.g. dawg", text: $dogManager.name)
                             .textFieldStyle(.roundedBorder)
                             .padding(.horizontal)
-                            .foregroundStyle(.white)
                         
                         Button("Save name") {
                             isNameFinal = true
