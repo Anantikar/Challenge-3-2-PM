@@ -19,6 +19,7 @@ struct FirstTimeSheetView: View {
             TextField("name", text: $dogManager.name)
             Button("get started") {
                 hasSeenFirstTimeSheet = true // Mark as seen
+                dogManager.name = dogManager.name.trimmingCharacters(in: .whitespacesAndNewlines)
                 dismiss() // Dismiss the sheet
             }
             .disabled(dogManager.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
