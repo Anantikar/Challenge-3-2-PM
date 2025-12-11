@@ -27,6 +27,7 @@ struct AppsOverviewView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                             .bold()
+                            .padding()
                     } else {
                         Text("no apps currently locked")
                             .font(.largeTitle)

@@ -54,6 +54,7 @@ struct PickerView: View {
                 .padding(.top)
             }
         }
+        .padding()
         .onAppear {
             loadTimes()
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
