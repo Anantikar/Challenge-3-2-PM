@@ -48,7 +48,7 @@ struct AppsOverviewView: View {
                     .tint(.red)
                     .disabled(!manager.isLocked)
                     .opacity(!manager.isLocked ? 0.7 : 1.0)
-                    .padding(.top, 100)
+                    .padding()
                     Spacer()
                 }
                 .navigationTitle("block apps")
