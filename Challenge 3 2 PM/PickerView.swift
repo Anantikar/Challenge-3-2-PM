@@ -28,7 +28,7 @@ struct PickerView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 20) {
                 DogImageView(dogManager: dogManager)
                 Text("notifications sent based on your chosen bedtime")
                 HStack {
