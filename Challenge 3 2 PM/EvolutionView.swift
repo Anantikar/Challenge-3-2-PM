@@ -42,6 +42,7 @@ struct EvolutionView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(!gcManager.isAuthenticated)
+                .padding()
             }
             .navigationTitle("leaderboard")
         }
